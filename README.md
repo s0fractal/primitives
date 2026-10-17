@@ -25,6 +25,12 @@ that its negatives bite lives, and the registered implementations. Vectors impor
 from warrant carry the commit and the SHA-256 of their source file
 ([tools/import_warrant.py](tools/import_warrant.py)).
 
+A boundary describes a whole class. A proof covers one implementation, so it is
+listed separately under the class's `proofs`. The first one is warrant's Rust hex
+layer under `p256-decode`. Creusot proves that it accepts exactly the lowercase
+spellings it writes, and 5 of 5 mutants break that proof. The curve checks that
+follow it are still held only by the vectors.
+
 ## Why `p256-decode` exists (measured)
 
 End-to-end signature vectors cannot test a decoder's refusals. A reject vector carries
