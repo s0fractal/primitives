@@ -63,7 +63,7 @@ every consumer meets it at its next pin bump.
 | warrant Python, `master` 41fd08c | 4/4 | 52/52 | 4/4 | 50/50 | UNRUN (no probe class yet) |
 | warrant Go, same | 4/4 | 52/52 | 4/4 | 50/50 | UNRUN |
 | warrant Rust, same | 4/4 | 52/52 | 4/4 | 50/50 | UNRUN |
-| warrant, branch `feat/primitives-p256-decode` (Python, Go, Rust) | 4/4 | 52/52 | 4/4 | 50/50 | 19/19 |
+| warrant `master` c2215c1, after PR #123 (Python, Go, Rust) | 4/4 | 52/52 | 4/4 | 50/50 | 19/19 |
 | black-heart `crypto.py` via adapter | UNRUN | UNRUN | UNRUN | 34/34 Ed25519, 16 P-256 UNRUN | UNRUN |
 | warrant before WRT-019 (old checkout) | 4/4 | 52/52 | 4/4 | 47/50: rejects both P-256 positives, **accepts** an Ed25519 signature labelled P-256 | UNRUN |
 
