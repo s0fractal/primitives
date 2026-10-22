@@ -57,18 +57,19 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - Give every mutant run a fresh bytecode cache: an earlier same-size mutant's cache can be loaded instead (minds tools/run_mutants.py, PR #4 round 3).
 - End-to-end vectors can be blind to a component's refusals; measure with a mutant before trusting them (primitives p256-decode).
 - A guard is burned only when removing it lets the forbidden write happen. If the code right after the guard would crash without it, the mutant is killed by the crash and proves nothing: make that code total, so the lost property is what the mutant exposes (warrant PR #170: M327 and M335 were first killed by an IndexError).
-- A mutant run means nothing over a red baseline: a runner that counts a kill when the target case fails also counts a case that fails without any mutant (warrant #170 AMEND 1: M300-M318 read killed while roadmap_test was red). Run the suites green first, as CI does.
+- A mutant run means nothing over a red baseline: a runner that counts a kill when the target case fails also counts a case that fails without any mutant (warrant #170 AMEND 1: M300-M318 read killed while roadmap_test was red). Make the runner refuse it: run each targeted test file once unmutated, in the same copy the mutants use, and refuse the whole run when a target case fails there (warrant #172: BASELINE_RED, exit 2; master's runner read M25 and A09 killed over a planted red case).
+- A sharded mutant run claims coverage only when a merge proves it: the parts' union is the whole list, no id is in two parts, each row is the current definition over the same sources, and each kill is recomputed from the row's own case results, not read from its label (warrant #172: tests/mutants.py --merge, in the required check).
 - Read the map from the code's side too: claims listing their mutants say nothing about the statements no mutant changes. On warrant 3f2be6a, 274 of 2820 statements of warrant/ and warrant_agent/ were changed by a mutant a BACKED claim cites, and 9 cited mutants only insert code before a statement, so their claims reach no existing statement (warrant tools/claims.py why --uncovered).
 
 **Where.**
 
 - `minds`: `tools/run_mutants.py` — mutants.json; TwinDivergence also counts as a kill
-- `warrant`: `tests/mutants.py` — cited per claim in SPEC-CLAIMS.md
-- `warrant`: `tools/claims.py` — why FILE:LINE: a statement -> the mutants that change it -> the BACKED claims citing them -> obligations -> goals; why --uncovered: the statements no cited mutant changes
+- `warrant`: `tests/mutants.py` — cited per claim in SPEC-CLAIMS.md; BASELINE_RED guard, --shard K/N and --merge (PR #172)
 - `warrant-pdf`: `tools/mutants.json`
 - `warrant-vet`: `tools/mutants.json`
 - `sokol-core`: `.cargo/mutants.toml` — cargo-mutants
 - `primitives`: `tools/p256_decode.py` — --selftest: every negative bites
+- `warrant`: `tools/claims.py` — why FILE:LINE: a statement -> the mutants that change it -> the BACKED claims citing them -> obligations -> goals; why --uncovered: the statements no cited mutant changes
 
 <a id="generate-or-refuse"></a>
 ## Generate or refuse; do not enumerate or parse
