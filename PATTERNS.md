@@ -33,7 +33,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 
 **Where.**
 
-- `warrant`: `tools/claims.py` — normative SPEC.md sentences filed as Warrant 2 records in .warrant/store; SPEC-CLAIMS.md is the generated view
+- `warrant`: `tools/claimslib` — normative SPEC.md sentences filed as Warrant 2 records in .warrant/store; SPEC-CLAIMS.md is the generated view (tools/claims.py is the command; one module per responsibility since warrant #176)
 - `warrant`: `SPEC-CLAIMS.md` — generated; `tools/claims.py check` refuses a differing file
 - `warrant`: `tools/roadmap.py` — goals (unowned questions) and obligations (duties that answer them) as Warrant 2 records in .warrant/store; ROADMAP.md is the generated view, byte-compared; nothing renders into SPEC.md
 - `minds`: `assurance.json` — ASSURANCE.md rendered from it, byte-compared (PR #4)
@@ -71,7 +71,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - `warrant-vet`: `tools/mutants.json`
 - `sokol-core`: `.cargo/mutants.toml` — cargo-mutants
 - `primitives`: `tools/p256_decode.py` — --selftest: every negative bites
-- `warrant`: `tools/claims.py` — why FILE:LINE: a statement -> the mutants that change it -> the BACKED claims citing them -> obligations -> goals; why --uncovered: the statements no cited mutant changes
+- `warrant`: `tools/claimslib/why.py` — why FILE:LINE: a statement -> the mutants that change it -> the BACKED claims citing them -> obligations -> goals; why --uncovered: the statements no cited mutant changes
 
 <a id="generate-or-refuse"></a>
 ## Generate or refuse; do not enumerate or parse
@@ -87,12 +87,14 @@ Methods our projects share, as forms with their instances and lessons: shared me
 
 - minds release profile: a list of 'files an admission depends on' was bypassed four times (symlink, bytecode, namespace package, ZIP import); naming every tracked file closed it (PR #4).
 - minds ASSURANCE.md: seven hand-made Markdown readers fell in turn; generation from assurance.json ended it (PR #4).
+- A shape written in each module that checks it is a class, not a set of instances. Warrant's `$` anchor had to be fixed at fourteen sites (#164), with fourteen definitions of four hex shapes and the actor-id predicate in eleven modules. Define each shape once (warrant/shapes.py), make every former copy import it, and refuse any second definition by reading the source (tests/shapes_test.py S6), even a correct one. Retarget the mutants of a moved definition under their old ids, and give each predicate the same vectors: \n, \r\n, non-ASCII digits, uppercase, one short and one long, non-strings (warrant #176).
 
 **Where.**
 
 - `minds`: `tools/minds_chain.py` — profile_at: SHA-256 of every tracked file; a symlink or submodule refused
 - `minds`: `assurance.json`
 - `warrant`: `SPEC-CLAIMS.md`
+- `warrant`: `warrant/shapes.py` — hex64, hex128, the view token, the question reference and the actor id, defined once; tests/shapes_test.py S6 refuses a hex pattern written anywhere else
 
 <a id="vectors-not-shared-code"></a>
 ## Independent implementations held to shared vectors
@@ -120,15 +122,20 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - A binding grants only 'this key signs as this actor'. Who may act is the duty's (holder, owed_to, accept_by); whose acceptance or challenge counts is each receiver's own profile.
 - A counterexample is admitted by its replay, whoever files it: it lowers what it refutes (a claim's backing), never authorship. Only a lineage's author supersedes or retires it.
 - A record of who did what (accepted, challenged, refuted) is a generated view that grants nothing and that no rule reads.
+- What a mechanical backing establishes can be accepted mechanically: a checker is an actor named by the hash of its code, its key pinned like any role. It accepts only after it replays the claim's witnesses and mutants at one commit. Its acceptance carries the replay report and is named for what it checked, never as a review. The receiver reads every report against the claim, and the code at the reported commit against the actor id.
 
 **Lessons.**
 
 - Open admission must not make the names the configuration already gives a role first-come: on warrant #170's first head a fresh key bound `codex` and accepted a claim as codex, with check green. Pin every configured role in a reviewed file, as a receiver's profile pins keys: a key, reserved (null) or collective (never bindable, e.g. `readers`). Only names with no role stay first-come, and who a role is changes by a visible config diff (warrant #170 AMEND 1, .warrant/roles.json).
 - Without a counter, a stranger's challenge must not block CI, or open admission becomes a way to stop the repository: count it only for the author, owed_to and accept_by, and list everyone else's as a thesis (warrant PR #170).
+- An acceptor that no one may sign as cannot be replaced, because duties are append-only: a duty naming it can never be discharged by anyone else. The way out is a new duty for each lineage, filed by the author when it next supersedes the claim, with the old duty left OPEN as history and the views following the lineage. Warrant's 195 BACKED claims named codex, who would not accept them one by one. `claims.py rehome` moved them to duties the replay checker accepts, and `claims.py replay` accepted all 195 (warrant #176).
+- Custody of a program's key is still custody: whoever holds the checker's seed can sign as the checker without running it. Re-executing the reported commit's own checker code (hashed first) in CI is what turns a false report into a refusal before merge (warrant `claims.py replay --verify`, CHECKER_REPLAY_DIFFERS).
 
 **Where.**
 
-- `warrant`: `tools/claims.py` — admit_bindings (self-certifying .warrant/trust.json), challenge_table (counters from anyone), accept, ledger -> WITNESSES.md
+- `warrant`: `tools/claimslib/bindings.py` — admit_bindings (self-certifying .warrant/trust.json); counters.py challenge_table (counters from anyone); author.py accept; views.py ledger -> WITNESSES.md
+- `warrant`: `tools/claimslib/replay.py` — the replay checker: actor `checker sha256:<hash of this file>`; by_replay.py is what check reads of its acceptances
+- `warrant`: `tests/replay_test.py` — R0-R15: each adversary case of acceptance by replay, mutants M444-M462
 - `warrant`: `tests/circle_test.py` — every rule as a fixture case; mutants M319-M373
 
 <a id="witnessed-order"></a>
