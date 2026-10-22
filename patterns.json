@@ -18,41 +18,13 @@
     "A view's state label says what the engine decided, not only what the holder must do next: a discharge the engine held UNMET_CONDITION (its prerequisite still open) read 'no closure filed' in ROADMAP.md (warrant tools/roadmap.py need, roadmap_test P14)."
    ],
    "instances": [
-    {
-     "repo": "warrant",
-     "path": "tools/claims.py",
-     "note": "normative SPEC.md sentences filed as Warrant 2 records in .warrant/store; SPEC-CLAIMS.md is the generated view"
-    },
-    {
-     "repo": "warrant",
-     "path": "SPEC-CLAIMS.md",
-     "note": "generated; `tools/claims.py check` refuses a differing file"
-    },
-    {
-     "repo": "warrant",
-     "path": "tools/roadmap.py",
-     "note": "goals (unowned questions) and obligations (duties that answer them) as Warrant 2 records in .warrant/store; ROADMAP.md is the generated view, byte-compared; nothing renders into SPEC.md"
-    },
-    {
-     "repo": "minds",
-     "path": "assurance.json",
-     "note": "ASSURANCE.md rendered from it, byte-compared (PR #4)"
-    },
-    {
-     "repo": "minds",
-     "path": "tools/check_claims.py",
-     "note": "claims.json quotes every spec block; the spec itself is still split by hand (open: spec as a projection of its parts)"
-    },
-    {
-     "repo": "sokol-core",
-     "path": "scripts/check-claims.sh",
-     "note": "every test, metric, flag, ADR or path a document cites must exist; an empty scope fails"
-    },
-    {
-     "repo": "sokol-core",
-     "path": "docs/contracts",
-     "note": "one contract per invariant row, with shadow evidence"
-    }
+    {"repo": "warrant", "path": "tools/claims.py", "note": "normative SPEC.md sentences filed as Warrant 2 records in .warrant/store; SPEC-CLAIMS.md is the generated view"},
+    {"repo": "warrant", "path": "SPEC-CLAIMS.md", "note": "generated; `tools/claims.py check` refuses a differing file"},
+    {"repo": "warrant", "path": "tools/roadmap.py", "note": "goals (unowned questions) and obligations (duties that answer them) as Warrant 2 records in .warrant/store; ROADMAP.md is the generated view, byte-compared; nothing renders into SPEC.md"},
+    {"repo": "minds", "path": "assurance.json", "note": "ASSURANCE.md rendered from it, byte-compared (PR #4)"},
+    {"repo": "minds", "path": "tools/check_claims.py", "note": "claims.json quotes every spec block; the spec itself is still split by hand (open: spec as a projection of its parts)"},
+    {"repo": "sokol-core", "path": "scripts/check-claims.sh", "note": "every test, metric, flag, ADR or path a document cites must exist; an empty scope fails"},
+    {"repo": "sokol-core", "path": "docs/contracts", "note": "one contract per invariant row, with shadow evidence"}
    ]
   },
   {
@@ -75,41 +47,13 @@
     "Read the map from the code's side too: claims listing their mutants say nothing about the statements no mutant changes. On warrant 3f2be6a, 274 of 2820 statements of warrant/ and warrant_agent/ were changed by a mutant a BACKED claim cites, and 9 cited mutants only insert code before a statement, so their claims reach no existing statement (warrant tools/claims.py why --uncovered)."
    ],
    "instances": [
-    {
-     "repo": "minds",
-     "path": "tools/run_mutants.py",
-     "note": "mutants.json; TwinDivergence also counts as a kill"
-    },
-    {
-     "repo": "warrant",
-     "path": "tests/mutants.py",
-     "note": "cited per claim in SPEC-CLAIMS.md; BASELINE_RED guard, --shard K/N and --merge (PR #172)"
-    },
-    {
-     "repo": "warrant-pdf",
-     "path": "tools/mutants.json",
-     "note": ""
-    },
-    {
-     "repo": "warrant-vet",
-     "path": "tools/mutants.json",
-     "note": ""
-    },
-    {
-     "repo": "sokol-core",
-     "path": ".cargo/mutants.toml",
-     "note": "cargo-mutants"
-    },
-    {
-     "repo": "primitives",
-     "path": "tools/p256_decode.py",
-     "note": "--selftest: every negative bites"
-    },
-    {
-     "repo": "warrant",
-     "path": "tools/claims.py",
-     "note": "why FILE:LINE: a statement -> the mutants that change it -> the BACKED claims citing them -> obligations -> goals; why --uncovered: the statements no cited mutant changes"
-    }
+    {"repo": "minds", "path": "tools/run_mutants.py", "note": "mutants.json; TwinDivergence also counts as a kill"},
+    {"repo": "warrant", "path": "tests/mutants.py", "note": "cited per claim in SPEC-CLAIMS.md; BASELINE_RED guard, --shard K/N and --merge (PR #172)"},
+    {"repo": "warrant-pdf", "path": "tools/mutants.json", "note": ""},
+    {"repo": "warrant-vet", "path": "tools/mutants.json", "note": ""},
+    {"repo": "sokol-core", "path": ".cargo/mutants.toml", "note": "cargo-mutants"},
+    {"repo": "primitives", "path": "tools/p256_decode.py", "note": "--selftest: every negative bites"},
+    {"repo": "warrant", "path": "tools/claims.py", "note": "why FILE:LINE: a statement -> the mutants that change it -> the BACKED claims citing them -> obligations -> goals; why --uncovered: the statements no cited mutant changes"}
    ]
   },
   {
@@ -125,21 +69,9 @@
     "minds ASSURANCE.md: seven hand-made Markdown readers fell in turn; generation from assurance.json ended it (PR #4)."
    ],
    "instances": [
-    {
-     "repo": "minds",
-     "path": "tools/minds_chain.py",
-     "note": "profile_at: SHA-256 of every tracked file; a symlink or submodule refused"
-    },
-    {
-     "repo": "minds",
-     "path": "assurance.json",
-     "note": ""
-    },
-    {
-     "repo": "warrant",
-     "path": "SPEC-CLAIMS.md",
-     "note": ""
-    }
+    {"repo": "minds", "path": "tools/minds_chain.py", "note": "profile_at: SHA-256 of every tracked file; a symlink or submodule refused"},
+    {"repo": "minds", "path": "assurance.json", "note": ""},
+    {"repo": "warrant", "path": "SPEC-CLAIMS.md", "note": ""}
    ]
   },
   {
@@ -152,16 +84,8 @@
    ],
    "lessons": [],
    "instances": [
-    {
-     "repo": "primitives",
-     "path": "catalog.json",
-     "note": "classes, boundaries, bite proofs, registered implementations"
-    },
-    {
-     "repo": "primitives",
-     "path": "run.py",
-     "note": ""
-    }
+    {"repo": "primitives", "path": "catalog.json", "note": "classes, boundaries, bite proofs, registered implementations"},
+    {"repo": "primitives", "path": "run.py", "note": ""}
    ]
   },
   {
@@ -179,16 +103,8 @@
     "Without a counter, a stranger's challenge must not block CI, or open admission becomes a way to stop the repository: count it only for the author, owed_to and accept_by, and list everyone else's as a thesis (warrant PR #170)."
    ],
    "instances": [
-    {
-     "repo": "warrant",
-     "path": "tools/claims.py",
-     "note": "admit_bindings (self-certifying .warrant/trust.json), challenge_table (counters from anyone), accept, ledger -> WITNESSES.md"
-    },
-    {
-     "repo": "warrant",
-     "path": "tests/circle_test.py",
-     "note": "every rule as a fixture case; mutants M319-M373"
-    }
+    {"repo": "warrant", "path": "tools/claims.py", "note": "admit_bindings (self-certifying .warrant/trust.json), challenge_table (counters from anyone), accept, ledger -> WITNESSES.md"},
+    {"repo": "warrant", "path": "tests/circle_test.py", "note": "every rule as a fixture case; mutants M319-M373"}
    ]
   },
   {
@@ -205,16 +121,8 @@
     "minds PR #4 took ten rounds; six were on tooling that section 0 had already exempted."
    ],
    "instances": [
-    {
-     "repo": "minds",
-     "path": "REVIEWING.md",
-     "note": "section 0"
-    },
-    {
-     "repo": "sokol-core",
-     "path": ".github/workflows/witness-gate.yml",
-     "note": "signed witnesses as a required check"
-    }
+    {"repo": "minds", "path": "REVIEWING.md", "note": "section 0"},
+    {"repo": "sokol-core", "path": ".github/workflows/witness-gate.yml", "note": "signed witnesses as a required check"}
    ]
   },
   {
@@ -227,26 +135,10 @@
    ],
    "lessons": [],
    "instances": [
-    {
-     "repo": "manifesto",
-     "path": "CONTROLLED-FORGETTING-0.1.md",
-     "note": ""
-    },
-    {
-     "repo": "sokol-core",
-     "path": "docs/RETIRED.md",
-     "note": ""
-    },
-    {
-     "repo": "workspace",
-     "path": "ARCHIVED-WORKSPACE.md",
-     "note": "~/Projects tombstone"
-    },
-    {
-     "repo": "workspace",
-     "path": "ARCHIVED-REPOSITORIES.md",
-     "note": ""
-    }
+    {"repo": "manifesto", "path": "CONTROLLED-FORGETTING-0.1.md", "note": ""},
+    {"repo": "sokol-core", "path": "docs/RETIRED.md", "note": ""},
+    {"repo": "workspace", "path": "ARCHIVED-WORKSPACE.md", "note": "~/Projects tombstone"},
+    {"repo": "workspace", "path": "ARCHIVED-REPOSITORIES.md", "note": ""}
    ]
   }
  ]
