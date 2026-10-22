@@ -7,6 +7,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - [Generate or refuse; do not enumerate or parse](#generate-or-refuse)
 - [Independent implementations held to shared vectors](#vectors-not-shared-code)
 - [Admit by evidence, never by an admin](#admission-by-evidence)
+- [Order is witnessed, not claimed](#witnessed-order)
 - [Strong review where a mistake is costly, once](#review-economy)
 - [Forget by record, never by deletion](#controlled-forgetting)
 
@@ -128,6 +129,31 @@ Methods our projects share, as forms with their instances and lessons: shared me
 
 - `warrant`: `tools/claims.py` — admit_bindings (self-certifying .warrant/trust.json), challenge_table (counters from anyone), accept, ledger -> WITNESSES.md
 - `warrant`: `tests/circle_test.py` — every rule as a fixture case; mutants M319-M373
+
+<a id="witnessed-order"></a>
+## Order is witnessed, not claimed
+
+**Problem.** A time a signer writes into its own record orders nothing: whoever dates a record can place it before records it already knows about, and a rule that compares those times lets one party rewrite what happened.
+
+**Form.**
+
+- Each writer's records form a chain: every record names the one its writer filed before (its id covers that link), so a record cannot be placed before what its writer already filed; it can only extend the chain or fork it.
+- Where a rule needs one of a writer's records before another of the same writer's, the chain decides, never the claimed time; a pair the chain does not order (a fork, a record outside every chain) does not meet the rule.
+- A fork is listed as evidence, and nothing is excluded for it: exclusion lets the forker retract its own earlier records.
+- Writers extend the head by compare-and-swap; a reader treats claimed time as a claim and states what no record witnesses (the order of two writers' records that do not name each other).
+
+**Lessons.**
+
+- warrant F43 (outside review, reproduced on 3f2be6a): a delegate discharged before accepting, then filed a second acceptance dated before its discharge; the engine took the earliest acceptance and the duty became DISCHARGED. 'Use the latest acceptance' stops that reproduction, not a single backdated acceptance filed after the discharge; only the delegate's own chain orders the two (warrant #174, SPEC-4.1-11).
+- Excluding both branches of a fork looks strict and is a retraction button: a holder forks before its own handover, the handover disappears, and the new holder's admitted work becomes unauthorized. Keep both, list the fork, and let the chain rules fail only the forker's own unordered filings (warrant assessment_test R43, mutant M415).
+- A per-receiver intake log (witnessed birth) is no base order for records that travel as whole-store unions: at the receiver everything arrives in one import and the order falls back to claimed time, so two receivers judge the same records differently. A shared history the receiver trusts (a protected branch's merges) can be a later operand; it is not in the snapshot.
+- Records filed in one second must still follow their chain: an order of (time, id) put a writer's discharge before its own acceptance whenever the discharge had the smaller id (warrant SPEC-4-7, assessment_test R48).
+
+**Where.**
+
+- `minds`: `vars1.py` — the gate: refs/vars/heads/<scope> is a linear chain moved by `git update-ref` compare-and-swap; append-only checked by `git diff-tree --diff-filter=a`; birth = first commit holding an object (VARS-1 §3, §4.1)
+- `warrant`: `warrant/engine.py` — View._chains / before / ordered; Holders.at(pos, filing): a filer's own records in chain order (SPEC-4-8..4-10, SPEC-4.1-11/12)
+- `warrant`: `warrant/store.py` — Store.append / Store.extend: prev from the actor's head under a lock on records/; warrant-agent commit refuses CHAIN_MOVED
 
 <a id="review-economy"></a>
 ## Strong review where a mistake is costly, once
