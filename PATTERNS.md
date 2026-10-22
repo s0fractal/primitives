@@ -27,6 +27,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - A checker whose scope comes out empty must fail, not pass (sokol-core scripts/check-claims.sh).
 - A count of quotes found is stale-green: it stays green when the source is deleted (manifesto, papers/every-check-spawns-more/check_claims.py, deprecated for that reason).
 - A view of superseding records orders a lineage by the supersession chain, never by id or time alone: records filed in the same second tie on `at`, and ordering by id printed a reformulated goal before the one it replaced (warrant tools/roadmap.py, roadmap_test P6).
+- A view's state label says what the engine decided, not only what the holder must do next: a discharge the engine held UNMET_CONDITION (its prerequisite still open) read 'no closure filed' in ROADMAP.md (warrant tools/roadmap.py need, roadmap_test P14).
 
 **Where.**
 
@@ -57,11 +58,13 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - End-to-end vectors can be blind to a component's refusals; measure with a mutant before trusting them (primitives p256-decode).
 - A guard is burned only when removing it lets the forbidden write happen. If the code right after the guard would crash without it, the mutant is killed by the crash and proves nothing: make that code total, so the lost property is what the mutant exposes (warrant PR #170: M327 and M335 were first killed by an IndexError).
 - A mutant run means nothing over a red baseline: a runner that counts a kill when the target case fails also counts a case that fails without any mutant (warrant #170 AMEND 1: M300-M318 read killed while roadmap_test was red). Run the suites green first, as CI does.
+- Read the map from the code's side too: claims listing their mutants say nothing about the statements no mutant changes. On warrant 3f2be6a, 274 of 2820 statements of warrant/ and warrant_agent/ were changed by a mutant a BACKED claim cites, and 9 cited mutants only insert code before a statement, so their claims reach no existing statement (warrant tools/claims.py why --uncovered).
 
 **Where.**
 
 - `minds`: `tools/run_mutants.py` — mutants.json; TwinDivergence also counts as a kill
 - `warrant`: `tests/mutants.py` — cited per claim in SPEC-CLAIMS.md
+- `warrant`: `tools/claims.py` — why FILE:LINE: a statement -> the mutants that change it -> the BACKED claims citing them -> obligations -> goals; why --uncovered: the statements no cited mutant changes
 - `warrant-pdf`: `tools/mutants.json`
 - `warrant-vet`: `tools/mutants.json`
 - `sokol-core`: `.cargo/mutants.toml` — cargo-mutants
