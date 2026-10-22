@@ -54,6 +54,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - Give every mutant run a fresh bytecode cache: an earlier same-size mutant's cache can be loaded instead (minds tools/run_mutants.py, PR #4 round 3).
 - End-to-end vectors can be blind to a component's refusals; measure with a mutant before trusting them (primitives p256-decode).
 - A guard is burned only when removing it lets the forbidden write happen. If the code right after the guard would crash without it, the mutant is killed by the crash and proves nothing: make that code total, so the lost property is what the mutant exposes (warrant PR #170: M327 and M335 were first killed by an IndexError).
+- A mutant run means nothing over a red baseline: a runner that counts a kill when the target case fails also counts a case that fails without any mutant (warrant #170 AMEND 1: M300-M318 read killed while roadmap_test was red). Run the suites green first, as CI does.
 
 **Where.**
 
@@ -107,14 +108,14 @@ Methods our projects share, as forms with their instances and lessons: shared me
 
 **Form.**
 
-- A key binding certifies itself: the key signs {actor, public key, purpose}. A checker admits it mechanically, the first binding of an actor wins, and a binding admitted at the base can be neither dropped nor preceded.
+- A key binding certifies itself: the key signs {actor, public key, purpose}. A checker admits it mechanically; a name with no role is first-come, a name the configuration gives a role binds only the key its pin names, and a binding admitted at the base can be neither dropped nor preceded.
 - A binding grants only 'this key signs as this actor'. Who may act is the duty's (holder, owed_to, accept_by); whose acceptance or challenge counts is each receiver's own profile.
 - A counterexample is admitted by its replay, whoever files it: it lowers what it refutes (a claim's backing), never authorship. Only a lineage's author supersedes or retires it.
 - A record of who did what (accepted, challenged, refuted) is a generated view that grants nothing and that no rule reads.
 
 **Lessons.**
 
-- Open admission turns every name the records already use into first-come: in warrant, codex, s0fractal and readers were named by duties and unbound, so a squatter could release obligations or make its theses count. Bind the names in use before opening the door; reserving them would need the admin you removed (warrant PR #170).
+- Open admission must not make the names the configuration already gives a role first-come: on warrant #170's first head a fresh key bound `codex` and accepted a claim as codex, with check green. Pin every configured role in a reviewed file, as a receiver's profile pins keys: a key, reserved (null) or collective (never bindable, e.g. `readers`). Only names with no role stay first-come, and who a role is changes by a visible config diff (warrant #170 AMEND 1, .warrant/roles.json).
 - Without a counter, a stranger's challenge must not block CI, or open admission becomes a way to stop the repository: count it only for the author, owed_to and accept_by, and list everyone else's as a thesis (warrant PR #170).
 
 **Where.**
