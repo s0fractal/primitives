@@ -25,11 +25,13 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - Never parse Markdown to find claims: minds PR #4 spent nine review rounds on comments, fences, escapes and renderer disagreements before switching ASSURANCE.md to a rendering of data, which warrant's SPEC-CLAIMS.md had already done.
 - A checker whose scope comes out empty must fail, not pass (sokol-core scripts/check-claims.sh).
 - A count of quotes found is stale-green: it stays green when the source is deleted (manifesto, papers/every-check-spawns-more/check_claims.py, deprecated for that reason).
+- A view of superseding records orders a lineage by the supersession chain, never by id or time alone: records filed in the same second tie on `at`, and ordering by id printed a reformulated goal before the one it replaced (warrant tools/roadmap.py, roadmap_test P6).
 
 **Where.**
 
 - `warrant`: `tools/claims.py` — normative SPEC.md sentences filed as Warrant 2 records in .warrant/store; SPEC-CLAIMS.md is the generated view
 - `warrant`: `SPEC-CLAIMS.md` — generated; `tools/claims.py check` refuses a differing file
+- `warrant`: `tools/roadmap.py` — goals (unowned questions) and obligations (duties that answer them) as Warrant 2 records in .warrant/store; ROADMAP.md is the generated view, byte-compared; nothing renders into SPEC.md
 - `minds`: `assurance.json` — ASSURANCE.md rendered from it, byte-compared (PR #4)
 - `minds`: `tools/check_claims.py` — claims.json quotes every spec block; the spec itself is still split by hand (open: spec as a projection of its parts)
 - `sokol-core`: `scripts/check-claims.sh` — every test, metric, flag, ADR or path a document cites must exist; an empty scope fails
