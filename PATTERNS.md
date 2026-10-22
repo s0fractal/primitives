@@ -8,6 +8,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - [Independent implementations held to shared vectors](#vectors-not-shared-code)
 - [Admit by evidence, never by an admin](#admission-by-evidence)
 - [Order is witnessed, not claimed](#witnessed-order)
+- [A cache changes cost, never the answer](#verified-cache)
 - [Strong review where a mistake is costly, once](#review-economy)
 - [Forget by record, never by deletion](#controlled-forgetting)
 
@@ -154,6 +155,31 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - `minds`: `vars1.py` — the gate: refs/vars/heads/<scope> is a linear chain moved by `git update-ref` compare-and-swap; append-only checked by `git diff-tree --diff-filter=a`; birth = first commit holding an object (VARS-1 §3, §4.1)
 - `warrant`: `warrant/engine.py` — View._chains / before / ordered; Holders.at(pos, filing): a filer's own records in chain order (SPEC-4-8..4-10, SPEC-4.1-11/12)
 - `warrant`: `warrant/store.py` — Store.append / Store.extend: prev from the actor's head under a lock on records/; warrant-agent commit refuses CHAIN_MOVED
+
+<a id="verified-cache"></a>
+## A cache changes cost, never the answer
+
+**Problem.** Re-verifying everything on every read makes a store quadratic to write and slow to read, and a cache that stands in for verification is a second, unverified source of answers: one stale, forged or foreign entry admits what the full check refuses.
+
+**Form.**
+
+- Cache only a pure function's result, keyed by everything the answer depends on: the exact input bytes (a digest, not a file name or a timestamp), the trust or profile it was judged under, and the identity of the code that judged it.
+- Consult an entry only when every byte it stands for is present and hashed in this read; never let it stand for a file that is absent, changed or new. What remains per read is the I/O and the hashing: the floor of 'the bytes counted are the bytes present'.
+- The cache is the receiver's own, outside the data it describes: not in the store, the snapshot, the handoff or the identity of any result. An entry that is not provably its owner's (a MAC under the owner's secret) is skipped: a tampered, forged, stale or foreign cache costs a recomputation, never an answer.
+- Prove it against the cold path, whole: for every guard, a corruption case (other trust, changed bytes, another name, a new file, a removed file, a forged line, an edited verdict, another code identity) whose answers equal the uncached answers byte for byte, and a mutant that drops the guard and is killed by that case.
+
+**Lessons.**
+
+- warrant F44 (outside review 'Monday', reproduced on 6588a2b): the writer's head re-authenticated the whole store on every append, twice; 1000 appends by one actor took 184 s and one append at 10 000 records 3.8 s. Remembered verdicts (process memory, and an owner's MACed index for one-shot processes) remove the signature checks without trusting anything the full read would not; the second head read under the same lock found nothing the first did not and was removed (warrant #175: store.Verdicts, tests/store_index_test.py, mutants M430-M437).
+- A cache that holds verdicts must authenticate its own entries: warrant's ReplayCache trusts any file in its directory, so whoever can write there can choose a replay result. The F44 index MACs every line (trust, record id, bytes digest, verdict, code identity) under a random secret only its owner reads; the secret's randomness is itself a mutant (M437).
+- Key the code too: a verdict an older package computed under rules since tightened would admit what the new rules refuse. The F44 key binds the package's whole-tree identity (engine_identity) and the signature library's version, inside the MAC (M436).
+- Keep the cache out of the data's directory: the first F44 draft wrote the writer's index into the store, and warrant's claims check refused it as a STRAY_FILE; there it would also travel with every copy of the store. A directory of the owner's, like its keys, has neither problem.
+- A file's name is part of its input: keyed by the bytes digest alone, an authentic record's bytes copied under another record's name would inherit its verdict (M432).
+
+**Where.**
+
+- `warrant`: `warrant/store.py` — _verdict, Verdicts: authentication verdicts by (trust digest, record id, sha256 of the bytes), MACed with the code identity under the owner's secret; Store(root, verdicts=DIR), assess(verdicts=DIR), `--verdicts DIR` (F44, #175)
+- `warrant`: `warrant/compute.py` — ReplayCache: verified replays by provider identity and exact chain, consulted only when every byte is in the view (SPEC §7); its entries are not MACed
 
 <a id="review-economy"></a>
 ## Strong review where a mistake is costly, once
