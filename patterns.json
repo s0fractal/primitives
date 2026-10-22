@@ -41,11 +41,12 @@
     "Give every mutant run a fresh bytecode cache: an earlier same-size mutant's cache can be loaded instead (minds tools/run_mutants.py, PR #4 round 3).",
     "End-to-end vectors can be blind to a component's refusals; measure with a mutant before trusting them (primitives p256-decode).",
     "A guard is burned only when removing it lets the forbidden write happen. If the code right after the guard would crash without it, the mutant is killed by the crash and proves nothing: make that code total, so the lost property is what the mutant exposes (warrant PR #170: M327 and M335 were first killed by an IndexError).",
-    "A mutant run means nothing over a red baseline: a runner that counts a kill when the target case fails also counts a case that fails without any mutant (warrant #170 AMEND 1: M300-M318 read killed while roadmap_test was red). Run the suites green first, as CI does."
+    "A mutant run means nothing over a red baseline: a runner that counts a kill when the target case fails also counts a case that fails without any mutant (warrant #170 AMEND 1: M300-M318 read killed while roadmap_test was red). Make the runner refuse it: run each targeted test file once unmutated, in the same copy the mutants use, and refuse the whole run when a target case fails there (warrant #172: BASELINE_RED, exit 2; master's runner read M25 and A09 killed over a planted red case).",
+    "A sharded mutant run claims coverage only when a merge proves it: the parts' union is the whole list, no id is in two parts, each row is the current definition over the same sources, and each kill is recomputed from the row's own case results, not read from its label (warrant #172: tests/mutants.py --merge, in the required check)."
    ],
    "instances": [
     {"repo": "minds", "path": "tools/run_mutants.py", "note": "mutants.json; TwinDivergence also counts as a kill"},
-    {"repo": "warrant", "path": "tests/mutants.py", "note": "cited per claim in SPEC-CLAIMS.md"},
+    {"repo": "warrant", "path": "tests/mutants.py", "note": "cited per claim in SPEC-CLAIMS.md; BASELINE_RED guard, --shard K/N and --merge (PR #172)"},
     {"repo": "warrant-pdf", "path": "tools/mutants.json", "note": ""},
     {"repo": "warrant-vet", "path": "tools/mutants.json", "note": ""},
     {"repo": "sokol-core", "path": ".cargo/mutants.toml", "note": "cargo-mutants"},
