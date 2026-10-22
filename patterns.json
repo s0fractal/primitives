@@ -1,0 +1,118 @@
+{
+ "about": "Methods our projects share, as forms with their instances and lessons: shared method, not shared code. Each project keeps its own implementation; before building one of these, read its entry and start from the form and the lessons, not from scratch. PATTERNS.md is rendered from this file (python3 tools/patterns.py --write); tools/check.py refuses a hand-edited PATTERNS.md, and `python3 tools/patterns.py --locate ~/Projects` checks every instance path in local checkouts.",
+ "patterns": [
+  {
+   "id": "claims-are-the-source",
+   "name": "Claims are the source; documents are views",
+   "problem": "A prose spec or assurance document drifts from what the tests establish, and a checker that reads the prose to find claims can be fooled by the prose.",
+   "form": [
+    "Each normative sentence or assurance row is a record: id, text, witnesses (tests, proofs), mutants, status (proved, tested, unburned, assumed, informative...).",
+    "The human document, or the part of it that carries claims, is generated from the records; CI refuses a view that differs from the rendering.",
+    "Debt is listed, never hidden: a claim with no witness or no biting mutant is shown as such."
+   ],
+   "lessons": [
+    "Never parse Markdown to find claims: minds PR #4 spent nine review rounds on comments, fences, escapes and renderer disagreements before switching ASSURANCE.md to a rendering of data, which warrant's SPEC-CLAIMS.md had already done.",
+    "A checker whose scope comes out empty must fail, not pass (sokol-core scripts/check-claims.sh).",
+    "A count of quotes found is stale-green: it stays green when the source is deleted (manifesto, papers/every-check-spawns-more/check_claims.py, deprecated for that reason)."
+   ],
+   "instances": [
+    {"repo": "warrant", "path": "tools/claims.py", "note": "normative SPEC.md sentences filed as Warrant 2 records in .warrant/store; SPEC-CLAIMS.md is the generated view"},
+    {"repo": "warrant", "path": "SPEC-CLAIMS.md", "note": "generated; `tools/claims.py check` refuses a differing file"},
+    {"repo": "minds", "path": "assurance.json", "note": "ASSURANCE.md rendered from it, byte-compared (PR #4)"},
+    {"repo": "minds", "path": "tools/check_claims.py", "note": "claims.json quotes every spec block; the spec itself is still split by hand (open: spec as a projection of its parts)"},
+    {"repo": "sokol-core", "path": "scripts/check-claims.sh", "note": "every test, metric, flag, ADR or path a document cites must exist; an empty scope fails"},
+    {"repo": "sokol-core", "path": "docs/contracts", "note": "one contract per invariant row, with shadow evidence"}
+   ]
+  },
+  {
+   "id": "mutants-burn-claims",
+   "name": "A check counts only when a mutant breaks it",
+   "problem": "A green test whose name outruns what it tests looks like evidence.",
+   "form": [
+    "Each tested claim names mutants: an exact find/replace in one file.",
+    "A runner applies one mutant at a time, runs the named tests, requires them to fail on an assertion (an import error proves nothing), and restores the file.",
+    "Before trusting a kill, look at why it failed."
+   ],
+   "lessons": [
+    "A mutant killed only by a diagnostic's wording proves no lost refusal: check that the refusal disappears, not that its message changes (minds PR #4, rounds 1-2).",
+    "A mutant that becomes equivalent after a redesign must be retargeted or removed, not kept as a green number.",
+    "Give every mutant run a fresh bytecode cache: an earlier same-size mutant's cache can be loaded instead (minds tools/run_mutants.py, PR #4 round 3).",
+    "End-to-end vectors can be blind to a component's refusals; measure with a mutant before trusting them (primitives p256-decode)."
+   ],
+   "instances": [
+    {"repo": "minds", "path": "tools/run_mutants.py", "note": "mutants.json; TwinDivergence also counts as a kill"},
+    {"repo": "warrant", "path": "tests/mutants.py", "note": "cited per claim in SPEC-CLAIMS.md"},
+    {"repo": "warrant-pdf", "path": "tools/mutants.json", "note": ""},
+    {"repo": "warrant-vet", "path": "tools/mutants.json", "note": ""},
+    {"repo": "sokol-core", "path": ".cargo/mutants.toml", "note": "cargo-mutants"},
+    {"repo": "primitives", "path": "tools/p256_decode.py", "note": "--selftest: every negative bites"}
+   ]
+  },
+  {
+   "id": "generate-or-refuse",
+   "name": "Generate or refuse; do not enumerate or parse",
+   "problem": "A list of what something depends on, or a reader of a free-form document, is wider than anything that can check it: each review round finds another corner.",
+   "form": [
+    "When a finding recurs in a new form, stop patching instances and close the class.",
+    "Either generate the artifact from data (so there is nothing to parse) or cover everything and refuse what cannot be read."
+   ],
+   "lessons": [
+    "minds release profile: a list of 'files an admission depends on' was bypassed four times (symlink, bytecode, namespace package, ZIP import); naming every tracked file closed it (PR #4).",
+    "minds ASSURANCE.md: seven hand-made Markdown readers fell in turn; generation from assurance.json ended it (PR #4)."
+   ],
+   "instances": [
+    {"repo": "minds", "path": "tools/minds_chain.py", "note": "profile_at: SHA-256 of every tracked file; a symlink or submodule refused"},
+    {"repo": "minds", "path": "assurance.json", "note": ""},
+    {"repo": "warrant", "path": "SPEC-CLAIMS.md", "note": ""}
+   ]
+  },
+  {
+   "id": "vectors-not-shared-code",
+   "name": "Independent implementations held to shared vectors",
+   "problem": "A shared library agrees only with itself; one bug passes everywhere at once.",
+   "form": [
+    "Behaviour lives as vectors with provenance; each implementation keeps its own code and answers a small probe.",
+    "Negatives must be shown to bite: each reject vector is rejected for the reason it names."
+   ],
+   "lessons": [],
+   "instances": [
+    {"repo": "primitives", "path": "catalog.json", "note": "classes, boundaries, bite proofs, registered implementations"},
+    {"repo": "primitives", "path": "run.py", "note": ""}
+   ]
+  },
+  {
+   "id": "review-economy",
+   "name": "Strong review where a mistake is costly, once",
+   "problem": "Model review is expensive, a weak reviewer's false ACCEPT is worse than none, and repeated rounds on tooling cost hours.",
+   "form": [
+    "Mechanical checks (CI, mutants, claims) on every change; one strong adversarial reviewer per pull request only on costly surfaces (gate, kernel, rules changes, verifier, release checks, normative spec).",
+    "The reviewer starts from the claims that moved, and works blind: what and where, never the author's conclusions.",
+    "After fixes, a further round only when a fix touched a costly surface, scoped to those claims by name.",
+    "Locally run what the change touches; the full suites and every mutant run in CI."
+   ],
+   "lessons": [
+    "minds PR #4 took ten rounds; six were on tooling that section 0 had already exempted."
+   ],
+   "instances": [
+    {"repo": "minds", "path": "REVIEWING.md", "note": "section 0"},
+    {"repo": "sokol-core", "path": ".github/workflows/witness-gate.yml", "note": "signed witnesses as a required check"}
+   ]
+  },
+  {
+   "id": "controlled-forgetting",
+   "name": "Forget by record, never by deletion",
+   "problem": "Old drafts, reviews and retired subjects keep pulling agents back into stale context.",
+   "form": [
+    "A subject leaves the active surface by a retirement record or tombstone that names it, why, and where its bytes are kept.",
+    "Nothing is recreated from history by default; re-adoption is a new explicit decision."
+   ],
+   "lessons": [],
+   "instances": [
+    {"repo": "manifesto", "path": "CONTROLLED-FORGETTING-0.1.md", "note": ""},
+    {"repo": "sokol-core", "path": "docs/RETIRED.md", "note": ""},
+    {"repo": "workspace", "path": "ARCHIVED-WORKSPACE.md", "note": "~/Projects tombstone"},
+    {"repo": "workspace", "path": "ARCHIVED-REPOSITORIES.md", "note": ""}
+   ]
+  }
+ ]
+}

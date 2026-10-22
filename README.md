@@ -77,4 +77,11 @@ every consumer meets it at its next pin bump.
 python3 tools/check.py      # catalog, manifest, provenance, p256-decode selftest
 ```
 
+## Shared patterns
+
+[PATTERNS.md](PATTERNS.md) holds the methods our projects share (claims as the source of their documents,
+mutants that burn claims, generate-or-refuse, review economy, controlled forgetting): each as a form, the lessons
+learned, and where it is already implemented. Shared method, not shared code, as with the vectors. It is rendered
+from [patterns.json](patterns.json); `python3 tools/patterns.py --locate ~/Projects` checks the instance paths.
+
 License: MIT.

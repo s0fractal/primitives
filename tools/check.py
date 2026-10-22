@@ -33,5 +33,8 @@ r = subprocess.run([sys.executable, str(ROOT / "tools" / "manifest.py"), "--chec
 chk("MANIFEST.sha256 covers the pack and is current", r.returncode == 0, r.stdout.strip())
 r = subprocess.run([sys.executable, str(ROOT / "tools" / "p256_decode.py"), "--selftest"], capture_output=True, text=True)
 chk("p256-decode: vectors reproduce and every negative bites", r.returncode == 0, r.stdout.strip().splitlines()[-1:])
+r = subprocess.run([sys.executable, str(ROOT / "tools" / "patterns.py"), "--check"], capture_output=True, text=True)
+chk("PATTERNS.md is the rendering of patterns.json, and every pattern has an instance", r.returncode == 0,
+    r.stdout.strip().splitlines()[:3])
 print("\nPRIMITIVES CHECK:", "ALL PASS" if ok else "FAILURES")
 sys.exit(0 if ok else 1)
