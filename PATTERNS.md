@@ -65,6 +65,11 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - A sharded mutant run claims coverage only when a merge proves it: the parts' union is the whole list, no id is in two parts, each row is the current definition over the same sources, and each kill is recomputed from the row's own case results, not read from its label (warrant #172: tests/mutants.py --merge, in the required check).
 - Read the map from the code's side too: claims listing their mutants say nothing about the statements no mutant changes. On warrant 3f2be6a, 274 of 2820 statements of warrant/ and warrant_agent/ were changed by a mutant a BACKED claim cites, and 9 cited mutants only insert code before a statement, so their claims reach no existing statement (warrant tools/claims.py why --uncovered).
 - A case that reads its results through an asserting helper (ok(), a bare ['ok'] index) dies before its own check: a mutant that breaks that call is killed by the exception, or lost with every case after it, never on the case's assertion. Read results with .get in the case a mutant targets (warrant agent_write_test W04 and W07, mutants A72 and A78).
+- Generated mutants find blind spots; they never back a claim. Keep them in a harness the claims checker does not know, so a citation of one is refused (warrant tests/generated_mutants.py, UNKNOWN_MUTANT). A survivor is closed by a witness that kills it on an assertion plus a curated mutant the claim cites (warrant #178: R49, M475 and M476 under SPEC-4.5-1).
+- Name a generated mutant by what it changes, not where: hash the file, scope, the statement's syntax, its occurrence among equal statements, the operator and the site. A positional key shifts with every insert above it, and a run-to-run diff (BLIND: killed before, surviving now) then means nothing.
+- Select tests per mutant from a line-coverage map made once per tree from the unmutated run, which doubles as the red baseline. Trace subprocesses too (a sitecustomize.py on PYTHONPATH, a SIGTERM handler that dumps): a test that overwrote PYTHONPATH hid the MCP server it starts, and its statements read NOT_RUN.
+- A hunt's exit status says the run happened, never what survived; its merge recomputes each outcome from its row instead of requiring KILLED. A TIMEOUT depends on the runner's load (six mutants flipped SURVIVED -> TIMEOUT between two local runs): never let it make a later survivor BLIND.
+- Boundaries are what hand-written mutants miss: of 8632 generated mutants of warrant (#178), the survivors closed first were `<=`/`<` and `>`/`>=` on attenuation, a depth bound with no case at 256/257, and a trust file binding one key twice. A survivor whose guard no input reaches is equivalent: record it with its reason under review, and name the entry when a test later kills it.
 
 **Where.**
 
@@ -75,6 +80,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - `sokol-core`: `.cargo/mutants.toml` — cargo-mutants
 - `primitives`: `tools/p256_decode.py` — --selftest: every negative bites
 - `warrant`: `tools/claimslib/why.py` — why FILE:LINE: a statement -> the mutants that change it -> the BACKED claims citing them -> obligations -> goals; why --uncovered: the statements no cited mutant changes
+- `warrant`: `tests/generated_mutants.py` — generated mutants and survivors: discovery, never backing; .github/workflows/survivors.yml weekly, with claims.py audit pairs
 
 <a id="generate-or-refuse"></a>
 ## Generate or refuse; do not enumerate or parse
