@@ -30,6 +30,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - A count of quotes found is stale-green: it stays green when the source is deleted (manifesto, papers/every-check-spawns-more/check_claims.py, deprecated for that reason).
 - A view of superseding records orders a lineage by the supersession chain, never by id or time alone: records filed in the same second tie on `at`, and ordering by id printed a reformulated goal before the one it replaced (warrant tools/roadmap.py, roadmap_test P6).
 - A view's state label says what the engine decided, not only what the holder must do next: a discharge the engine held UNMET_CONDITION (its prerequisite still open) read 'no closure filed' in ROADMAP.md (warrant tools/roadmap.py need, roadmap_test P14).
+- One mechanism for every contract: an application interface's rules go into the same claims document as a new pinned section, not into a second claims tool or document (warrant SPEC §10, the agent interface: 86 claims; AGENT.md became the operator's guide pointing to it). The tool needed only the placement of a new section's heading and first sentence (claims.py heading --section N, add --after N).
 
 **Where.**
 
@@ -40,6 +41,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - `minds`: `tools/check_claims.py` — claims.json quotes every spec block; the spec itself is still split by hand (open: spec as a projection of its parts)
 - `sokol-core`: `scripts/check-claims.sh` — every test, metric, flag, ADR or path a document cites must exist; an empty scope fails
 - `sokol-core`: `docs/contracts` — one contract per invariant row, with shadow evidence
+- `warrant`: `SPEC.md` — §10 Agent interface: the contract of warrant_agent (warrant-agent/1) as claims in the same document as the engine's rules, backed by agent cases and agent mutants
 
 <a id="mutants-burn-claims"></a>
 ## A check counts only when a mutant breaks it
@@ -62,6 +64,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - A mutant run means nothing over a red baseline: a runner that counts a kill when the target case fails also counts a case that fails without any mutant (warrant #170 AMEND 1: M300-M318 read killed while roadmap_test was red). Make the runner refuse it: run each targeted test file once unmutated, in the same copy the mutants use, and refuse the whole run when a target case fails there (warrant #172: BASELINE_RED, exit 2; master's runner read M25 and A09 killed over a planted red case).
 - A sharded mutant run claims coverage only when a merge proves it: the parts' union is the whole list, no id is in two parts, each row is the current definition over the same sources, and each kill is recomputed from the row's own case results, not read from its label (warrant #172: tests/mutants.py --merge, in the required check).
 - Read the map from the code's side too: claims listing their mutants say nothing about the statements no mutant changes. On warrant 3f2be6a, 274 of 2820 statements of warrant/ and warrant_agent/ were changed by a mutant a BACKED claim cites, and 9 cited mutants only insert code before a statement, so their claims reach no existing statement (warrant tools/claims.py why --uncovered).
+- A case that reads its results through an asserting helper (ok(), a bare ['ok'] index) dies before its own check: a mutant that breaks that call is killed by the exception, or lost with every case after it, never on the case's assertion. Read results with .get in the case a mutant targets (warrant agent_write_test W04 and W07, mutants A72 and A78).
 
 **Where.**
 
@@ -88,6 +91,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - minds release profile: a list of 'files an admission depends on' was bypassed four times (symlink, bytecode, namespace package, ZIP import); naming every tracked file closed it (PR #4).
 - minds ASSURANCE.md: seven hand-made Markdown readers fell in turn; generation from assurance.json ended it (PR #4).
 - A shape written in each module that checks it is a class, not a set of instances. Warrant's `$` anchor had to be fixed at fourteen sites (#164), with fourteen definitions of four hex shapes and the actor-id predicate in eleven modules. Define each shape once (warrant/shapes.py), make every former copy import it, and refuse any second definition by reading the source (tests/shapes_test.py S6), even a correct one. Retarget the mutants of a moved definition under their old ids, and give each predicate the same vectors: \n, \r\n, non-ASCII digits, uppercase, one short and one long, non-strings (warrant #176).
+- A table that explains a tuple's words drifts from the tuple: warrant's explain glossary had no entry for 4 of its 18 refusal codes. Hold the table to the tuple with a case that enumerates it (warrant agent_mcp_test M16 over errors.CODES, config.RELATIONS and engine.RELIANCE), not by review.
 
 **Where.**
 
