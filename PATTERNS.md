@@ -198,6 +198,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - Key the code too: a verdict an older package computed under rules since tightened would admit what the new rules refuse. The F44 key binds the package's whole-tree identity (engine_identity) and the signature library's version, inside the MAC (M436).
 - Keep the cache out of the data's directory: the first F44 draft wrote the writer's index into the store, and warrant's claims check refused it as a STRAY_FILE; there it would also travel with every copy of the store. A directory of the owner's, like its keys, has neither problem.
 - A file's name is part of its input: keyed by the bytes digest alone, an authentic record's bytes copied under another record's name would inherit its verdict (M432).
+- A verification that is pure Python grows with the bytes it re-verifies, not with the records: #177's ~95 versions of a 37 KB document made every claims check re-canonicalize ~3 MB, and claims-selftest (one check per case) went from 4 min past its 15-minute limit. Remember the verdict by the sha256 of the bytes, not the parsed value (each read stays a fresh object) and not the name (warrant store.Snapshot.json_blob, #179: 286 s -> 106 s; V19, M482-M483). Profile per case before raising a limit.
 
 **Where.**
 
