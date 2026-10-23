@@ -9,6 +9,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - [Admit by evidence, never by an admin](#admission-by-evidence)
 - [Order is witnessed, not claimed](#witnessed-order)
 - [A cache changes cost, never the answer](#verified-cache)
+- [Views as manifests over a content-addressed store; collection by reachability](#content-addressed-views)
 - [Strong review where a mistake is costly, once](#review-economy)
 - [Forget by record, never by deletion](#controlled-forgetting)
 
@@ -206,6 +207,32 @@ Methods our projects share, as forms with their instances and lessons: shared me
 
 - `warrant`: `warrant/store.py` — _verdict, Verdicts: authentication verdicts by (trust digest, record id, sha256 of the bytes), MACed with the code identity under the owner's secret; Store(root, verdicts=DIR), assess(verdicts=DIR), `--verdicts DIR` (F44, #175)
 - `warrant`: `warrant/compute.py` — ReplayCache: verified replays by provider identity and exact chain, consulted only when every byte is in the view (SPEC §7); its entries are not MACed
+
+<a id="content-addressed-views"></a>
+## Views as manifests over a content-addressed store; collection by reachability
+
+**Problem.** A frozen view that copies every byte it may answer from costs a whole store per view: the reader's guarantee (later changes alter nothing it reads) is bought with unbounded disk, and nothing ever decides which copies may go.
+
+**Form.**
+
+- One object store per owner, every object named by the SHA-256 of its bytes (git's loose objects, minds cas/): written once by linking a complete read-only file into place, so a name is never overwritten by a racing writer. Bytes under a name that do not hash to it are damage; the only replacement is the bytes that do, which can only restore what every reader of the name pins.
+- A view is a small manifest, itself an object, naming everything it answers from by hash: a tree (the listing, shared by every view of the same store state), the report body (shared while it is the same), the code it ran; a per-view pointer names the manifest. Bytes that may not be what their outer name says (a record file under a record id) are stored under their own hash, and the tree maps the outer name to it.
+- Every read hashes what it read; an absent or damaged object is a typed refusal, never a read from the live source. The frozen guarantee is then structural: objects only ever get added, and a manifest pins exact names.
+- Collection is mark and sweep from the live manifests only: expired views go first, then every object no live manifest reaches. Everything else keeps its own bytes and is never a root or touched (drafts, staging, journals); the source store is never touched.
+- Close the race by the lock, not by timing: a writer holds it shared from its first object until its manifest is reachable, a collector exclusively; readers take none, and a reader whose view expired under it is told so, not that the bytes are damaged. An opportunistic collection tries the lock without waiting, after the writer has released it.
+
+**Lessons.**
+
+- warrant-agent views were full copies: 45 views of a 1500-record store took 756 MB and 127 128 files on disk (Codex's real state reached 720 MB). As manifests over one object store: 18 MB and 2 964 files, 3 files and 12 KB per view, and context got faster (1.12 s to 0.65 s) because unchanged objects are compared, not rewritten (warrant #184, tests/agent_views_test.py J01-J16, mutants A114-A131).
+- Split what differs from what is shared before hashing it: two reports of an unchanged store differed only in their assessment id and as_of, so the report body is one shared object and the manifest carries the two fields.
+- Do not name an object by an identity its bytes may not have: a store can hold, under a record id, bytes that are not that record, and the view must show them as they were. Name every object by its own bytes and map the outer name in the tree.
+- Carry the source's own anomalies in the tree: the copying views dropped the store's misfiled entries, so the assessed snapshot never matched the captured one and every context of a store with a stray file was refused; a tree that lists them reproduces the store read exactly.
+
+**Where.**
+
+- `warrant`: `warrant_agent/objects.py` — the workspace's object store: put (link once, repair damage), get (hash on read), snapshot under admission limits, the shared/exclusive lock
+- `warrant`: `warrant_agent/views.py` — capture writes objects and a manifest under the shared lock; load resolves through it; collect marks from live manifests and sweeps; collect_due at a capture by gc_interval; `warrant-agent gc` (SPEC §10.2)
+- `minds`: `VARS-1-SPEC.md` — §3: cas/{atoms,cells,seals}/<2 hex>/<62 hex>, every entry's bytes hash to its path
 
 <a id="review-economy"></a>
 ## Strong review where a mistake is costly, once
