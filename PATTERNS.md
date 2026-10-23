@@ -101,6 +101,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - minds ASSURANCE.md: seven hand-made Markdown readers fell in turn; generation from assurance.json ended it (PR #4).
 - A shape written in each module that checks it is a class, not a set of instances. Warrant's `$` anchor had to be fixed at fourteen sites (#164), with fourteen definitions of four hex shapes and the actor-id predicate in eleven modules. Define each shape once (warrant/shapes.py), make every former copy import it, and refuse any second definition by reading the source (tests/shapes_test.py S6), even a correct one. Retarget the mutants of a moved definition under their old ids, and give each predicate the same vectors: \n, \r\n, non-ASCII digits, uppercase, one short and one long, non-strings (warrant #176).
 - A table that explains a tuple's words drifts from the tuple: warrant's explain glossary had no entry for 4 of its 18 refusal codes. Hold the table to the tuple with a case that enumerates it (warrant agent_mcp_test M16 over errors.CODES, config.RELATIONS and engine.RELIANCE), not by review.
+- A recipe in a guide is the test's input, not a copy of it: the exact MCP arguments for the roadmap's oblige, done and accept live in one JSON block of AGENT.md, and the equivalence test reads that block and requires the store it files to be byte-identical to the tool's after every step (warrant #179, Q01). Dogfooding the recipe on the real store found what the fixture could not: owned goals were not reachable through the interface at all (context scope).
 
 **Where.**
 
@@ -108,6 +109,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - `minds`: `assurance.json`
 - `warrant`: `SPEC-CLAIMS.md`
 - `warrant`: `warrant/shapes.py` — hex64, hex128, the view token, the question reference and the actor id, defined once; tests/shapes_test.py S6 refuses a hex pattern written anywhere else
+- `warrant`: `tests/agent_repo_test.py` — Q01 reads AGENT.md's roadmap recipe and compares stores byte for byte with tools/roadmap.py; Q02 runs it over stdio MCP
 
 <a id="vectors-not-shared-code"></a>
 ## Independent implementations held to shared vectors
@@ -144,6 +146,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - An acceptor that no one may sign as cannot be replaced, because duties are append-only: a duty naming it can never be discharged by anyone else. The way out is a new duty for each lineage, filed by the author when it next supersedes the claim, with the old duty left OPEN as history and the views following the lineage. Warrant's 195 BACKED claims named codex, who would not accept them one by one. `claims.py rehome` moved them to duties the replay checker accepts, and `claims.py replay` accepted all 195 (warrant #176).
 - Name a commit by its canonical full id, never by a ref: the full lowercase hex id of the repository's object format that Git resolves to itself as a commit, not a tag, a branch, HEAD~1, an abbreviation, an annotated tag's own id, uppercase or a trailing newline. A name can move. A signed replay report naming `refs/tags/replay-source` passed warrant #176 at c2d1bbd, and after the tag moved `claims.py replay --verify` re-executed another tree and said OK (Codex). Check the shape for every receipt, without git, so it holds after the receipt is in the base. Before reading or running anything, resolve the id to itself and compare its tree with the signed one. The rule is minds VARS-1 §3 (prior art), and warrant #176 AMEND 1 applies it: replay.canonical, CHECKER_COMMIT_NAME, regressions R16-R22.
 - Custody of a program's key is still custody: whoever holds the checker's seed can sign as the checker without running it. Re-executing the reported commit's own checker code (hashed first) in CI is what turns a false report into a refusal before merge (warrant `claims.py replay --verify`, CHECKER_REPLAY_DIFFERS).
+- One admission rule, one implementation, wherever keys are admitted: when a second reader (warrant's agent workspace) needed the repository's bindings under its roles, the rule moved from the claims tool into the engine package (warrant/bindings.py) and the tool imports it; its mutants moved with it (M319-M326, M376, M379). The reader admits on every view, and a roles file with any problem refuses instead of being read as fewer pins: a dropped pin makes its name first-come (warrant #179, T01-T03, A94-A96).
 
 **Where.**
 
@@ -152,6 +155,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - `warrant`: `tests/replay_test.py` — R0-R22: each adversary case of acceptance by replay (R16-R22: a commit named by its canonical id), mutants M444-M469
 - `minds`: `VARS-1-SPEC.md` — §3 Store and gate: a commit is named by its canonical id, never a ref, an abbreviation or a revision expression
 - `warrant`: `tests/circle_test.py` — every rule as a fixture case; mutants M319-M373
+- `warrant`: `warrant_agent/init.py` — warrant-agent-mcp init: a signer only from an existing seed whose key the repository pins and admits; no key created (I01-I10, A87-A93)
 
 <a id="witnessed-order"></a>
 ## Order is witnessed, not claimed
