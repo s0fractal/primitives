@@ -73,6 +73,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - An assertRaisesRegex failing with "X does not match Y" is no kill: the expected exception was raised, the input is still refused, only the message moved (another layer or the crash net caught it). minds found 23 of 203 such kills. Decide it where assertRaises checks (wrap _AssertRaisesContext.__exit__), not from printed lines: a multi-line message defeated the first line filter (Codex, minds PR #15). An import-time assert that refuses the mutant before the test runs is no kill either.
 - A refusal held by several layers (minds append-only: Check #2, the reader's status and mode checks, then the read of a deleted entry itself; a host guard and the pinned kernel) cannot be burned by guard mutants, even all of them together: its honest status is unburned, with the layers named. Build the vector that only one rule breaks first (delete an orphan atom, not change a mode): an ambiguous vector hides which layer refused.
 - Cargo decides what to rebuild by modification time: mutants built into a shared target were served the previous mutant's build (three false kills in minds). Build each kernel mutant in a fresh target, and refuse a build byte-equal to the pinned kernel as equivalent.
+- A test that fixes the step count while halving dt cannot see a defect whose error grows with simulated time: the starter PDF's energy test for the port-Hamiltonian kernel shows orders 4.4 and 2.4 for an explicit gyroscopic kick that diverges to 6e20 over 10^4 steps. Fix the horizon, not the step count, and name the kick as the mutant the test must kill (lab phs-soliton test 1, starter check C4a).
 
 **Where.**
 
@@ -84,6 +85,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - `primitives`: `tools/p256_decode.py` — --selftest: every negative bites
 - `warrant`: `tools/claimslib/why.py` — why FILE:LINE: a statement -> the mutants that change it -> the BACKED claims citing them -> obligations -> goals; why --uncovered: the statements no cited mutant changes
 - `warrant`: `tests/generated_mutants.py` — generated mutants and survivors: discovery, never backing; .github/workflows/survivors.yml weekly, with claims.py audit pairs
+- `lab`: `phs-soliton/tools/run_mutants.py` — mutants.json; every named test must fail on an assertion (all, not any), the baseline must pass first, a fresh pycache_prefix per test under ignored runs/
 
 <a id="generate-or-refuse"></a>
 ## Generate or refuse; do not enumerate or parse
