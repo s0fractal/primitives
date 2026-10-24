@@ -188,11 +188,13 @@
     "Locally run what the change touches; the full suites and every mutant run in CI."
    ],
    "lessons": [
-    "minds PR #4 took ten rounds; six were on tooling that section 0 had already exempted."
+    "minds PR #4 took ten rounds; six were on tooling that section 0 had already exempted.",
+    "A checker named by the hash of its code signs only from that code, but its seed is an ordinary file: when model sessions held it, they filed the checker's records at their own discretion (warrant #176, #181), and a session that refused left findings NOT REPLAYED (#190). The deployed waker now runs the base's pinned checker on every due head before the reviewer is woken: sandboxed (no network, writes confined to the worktree, the seed directory unreadable), the seed on standard input only, and it pushes only the records that run printed, while the branch is still at that head (warrant #192, W1-W11). On one machine, keeping the seed from agents is still policy, not enforcement."
    ],
    "instances": [
     {"repo": "minds", "path": "REVIEWING.md", "note": "section 0"},
-    {"repo": "sokol-core", "path": ".github/workflows/witness-gate.yml", "note": "signed witnesses as a required check"}
+    {"repo": "sokol-core", "path": ".github/workflows/witness-gate.yml", "note": "signed witnesses as a required check"},
+    {"repo": "warrant", "path": "integrations/codex-plugin/waker/waker.py", "note": "Waker.replay: the review replay checker before each wake, sandboxed, seed on stdin"}
    ]
   },
   {

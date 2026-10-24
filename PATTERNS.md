@@ -222,11 +222,13 @@ Methods our projects share, as forms with their instances and lessons: shared me
 **Lessons.**
 
 - minds PR #4 took ten rounds; six were on tooling that section 0 had already exempted.
+- A checker named by the hash of its code signs only from that code, but its seed is an ordinary file: when model sessions held it, they filed the checker's records at their own discretion (warrant #176, #181), and a session that refused left findings NOT REPLAYED (#190). The deployed waker now runs the base's pinned checker on every due head before the reviewer is woken: sandboxed (no network, writes confined to the worktree, the seed directory unreadable), the seed on standard input only, and it pushes only the records that run printed, while the branch is still at that head (warrant #192, W1-W11). On one machine, keeping the seed from agents is still policy, not enforcement.
 
 **Where.**
 
 - `minds`: `REVIEWING.md` — section 0
 - `sokol-core`: `.github/workflows/witness-gate.yml` — signed witnesses as a required check
+- `warrant`: `integrations/codex-plugin/waker/waker.py` — Waker.replay: the review replay checker before each wake, sandboxed, seed on stdin
 
 <a id="controlled-forgetting"></a>
 ## Forget by record, never by deletion
