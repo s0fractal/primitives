@@ -12,6 +12,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - [Views as manifests over a content-addressed store; collection by reachability](#content-addressed-views)
 - [Strong review where a mistake is costly, once](#review-economy)
 - [Forget by record, never by deletion](#controlled-forgetting)
+- [A write actor decides from trusted inputs only, binds them, and is exercised](#write-actor)
 
 <a id="claims-are-the-source"></a>
 ## Claims are the source; documents are views
@@ -278,3 +279,31 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - `sokol-core`: `docs/RETIRED.md`
 - `workspace`: `ARCHIVED-WORKSPACE.md` — ~/Projects tombstone
 - `workspace`: `ARCHIVED-REPOSITORIES.md`
+
+<a id="write-actor"></a>
+## A write actor decides from trusted inputs only, binds them, and is exercised
+
+**Problem.** An agent or workflow allowed to merge, publish or sign by itself is only as good as the inputs it reads at the moment of the write, and a gate never run on a real case is no evidence that it works.
+
+**Form.**
+
+- One predicate decides, and its twin (the condition for asking a reviewer) shares every fact and rule with it; formats are functions of the one result, never second copies of the logic.
+- Only trusted code runs: the base branch's, at the exact commit the forge reports for it. The candidate is read as data (Git objects: ls-tree, cat-file, diff-tree), never checked out, installed or run.
+- Authority comes from the base, never from the candidate: configuration, role pins and the trust built from them.
+- Every derived input is refused unless it is exactly what it claims: regular files named by their content address, no symlinks or submodules, checks bound to the workflow file that produced them and to the app that posted them.
+- The write binds what was read (the forge refuses the merge when the head moved), after reading the base and the candidate again just before it.
+- Holds the owner controls without code (a label, a repository variable, disabling the workflow); every refusal reason written where the owner reads it; changes to what decides merging are reviewed, and merged by the owner.
+- Negative tests assert the exact set of refusal codes, so a mutant removing one rule is seen even when another rule also refuses.
+
+**Lessons.**
+
+- warrant's autonomy envelope 0.1 was retired without ever merging anything: every production run stopped because the workflow token could not read the branch-protection endpoint it depended on (history/AUTONOMY-ENVELOPE-0.1-RETIREMENT.md at the tag history/warrant-0.x-2026-10-18). Read only what the actor's own token can read, and exercise the write on a real case before relying on it.
+- A required check is a name: any workflow of the pull request can post a job called `test`. Bind each required check to its workflow file through its check suite, and refuse a check of that name from another workflow (warrant merge-on-acceptance, G18).
+- A merge made with a workflow's GITHUB_TOKEN starts no push workflow: dispatch the base branch's CI after it, or master CI silently stops running (warrant merge-on-acceptance, G23).
+- A gate that can merge changes to its own rules lets the acceptor widen its own authority: the gate's configuration, pins, workflows and predicate are owner paths (warrant .warrant/merge.json owner_paths, G29-G30).
+
+**Where.**
+
+- `warrant`: `tools/claimslib/eligibility.py` — merge-eligible and due-for-review from one predicate; the pull request's head read as Git objects under the base's pins
+- `warrant`: `.github/workflows/merge-on-acceptance.yml` — base code only; at most one merge per run, bound to the assessed head; master CI dispatched after it
+- `warrant`: `integrations/codex-plugin/waker/waker.py` — runs the base tree's due predicate and wakes the reviewer once per head

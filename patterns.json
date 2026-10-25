@@ -240,6 +240,31 @@
     {"repo": "workspace", "path": "ARCHIVED-WORKSPACE.md", "note": "~/Projects tombstone"},
     {"repo": "workspace", "path": "ARCHIVED-REPOSITORIES.md", "note": ""}
    ]
+  },
+  {
+   "id": "write-actor",
+   "name": "A write actor decides from trusted inputs only, binds them, and is exercised",
+   "problem": "An agent or workflow allowed to merge, publish or sign by itself is only as good as the inputs it reads at the moment of the write, and a gate never run on a real case is no evidence that it works.",
+   "form": [
+    "One predicate decides, and its twin (the condition for asking a reviewer) shares every fact and rule with it; formats are functions of the one result, never second copies of the logic.",
+    "Only trusted code runs: the base branch's, at the exact commit the forge reports for it. The candidate is read as data (Git objects: ls-tree, cat-file, diff-tree), never checked out, installed or run.",
+    "Authority comes from the base, never from the candidate: configuration, role pins and the trust built from them.",
+    "Every derived input is refused unless it is exactly what it claims: regular files named by their content address, no symlinks or submodules, checks bound to the workflow file that produced them and to the app that posted them.",
+    "The write binds what was read (the forge refuses the merge when the head moved), after reading the base and the candidate again just before it.",
+    "Holds the owner controls without code (a label, a repository variable, disabling the workflow); every refusal reason written where the owner reads it; changes to what decides merging are reviewed, and merged by the owner.",
+    "Negative tests assert the exact set of refusal codes, so a mutant removing one rule is seen even when another rule also refuses."
+   ],
+   "lessons": [
+    "warrant's autonomy envelope 0.1 was retired without ever merging anything: every production run stopped because the workflow token could not read the branch-protection endpoint it depended on (history/AUTONOMY-ENVELOPE-0.1-RETIREMENT.md at the tag history/warrant-0.x-2026-10-18). Read only what the actor's own token can read, and exercise the write on a real case before relying on it.",
+    "A required check is a name: any workflow of the pull request can post a job called `test`. Bind each required check to its workflow file through its check suite, and refuse a check of that name from another workflow (warrant merge-on-acceptance, G18).",
+    "A merge made with a workflow's GITHUB_TOKEN starts no push workflow: dispatch the base branch's CI after it, or master CI silently stops running (warrant merge-on-acceptance, G23).",
+    "A gate that can merge changes to its own rules lets the acceptor widen its own authority: the gate's configuration, pins, workflows and predicate are owner paths (warrant .warrant/merge.json owner_paths, G29-G30)."
+   ],
+   "instances": [
+    {"repo": "warrant", "path": "tools/claimslib/eligibility.py", "note": "merge-eligible and due-for-review from one predicate; the pull request's head read as Git objects under the base's pins"},
+    {"repo": "warrant", "path": ".github/workflows/merge-on-acceptance.yml", "note": "base code only; at most one merge per run, bound to the assessed head; master CI dispatched after it"},
+    {"repo": "warrant", "path": "integrations/codex-plugin/waker/waker.py", "note": "runs the base tree's due predicate and wakes the reviewer once per head"}
+   ]
   }
  ]
 }
