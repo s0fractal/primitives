@@ -222,11 +222,16 @@ Methods our projects share, as forms with their instances and lessons: shared me
 **Lessons.**
 
 - minds PR #4 took ten rounds; six were on tooling that section 0 had already exempted.
+- A review the reviewer does not sign itself is prose relayed by hand: warrant's review loop ran 30+ times as REVIEW.md, chat and copy-paste. As records, ACCEPT is the reviewer's own accept of one head's closure, AMEND its challenge carrying a finding, and a finding with a test is replayed at each later head (reproduces / no longer reproduces) by a checker named by its code; a finding without one stays a labelled thesis.
+- Name what was reviewed by its full commit id, and what merged by its merge commit's second parent: acceptance is read from the tip's own store, so an acceptance filed after the merge does not turn it into a reviewed merge; a merge is a Git act, observed, never a closure.
+- Across actors only the signed `at` orders records: a same-second tie is not 'later'. Rules that ask whether a finding came after the next head use strict order, and fixtures date the later record explicitly, or the test is flaky (warrant reviews_test V18 failed under unrelated mutants).
+- A ledger column a generated view adds is paid in every case of the selftest that renders the view: the review counts of WITNESSES.md read the records without assessing them (warrant claims selftest, 134 cases).
 
 **Where.**
 
 - `minds`: `REVIEWING.md` — section 0
 - `sokol-core`: `.github/workflows/witness-gate.yml` — signed witnesses as a required check
+- `warrant`: `tools/claimslib/reviews.py` — the pull request review loop as records: duty, head closures, findings as challenges, replayed tests, merge observations; REVIEWS.md
 
 <a id="controlled-forgetting"></a>
 ## Forget by record, never by deletion
