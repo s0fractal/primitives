@@ -256,12 +256,14 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - Name what was reviewed by its full commit id, and what merged by its merge commit's second parent: acceptance is read from the tip's own store, so an acceptance filed after the merge does not turn it into a reviewed merge; a merge is a Git act, observed, never a closure.
 - Across actors only the signed `at` orders records: a same-second tie is not 'later'. Rules that ask whether a finding came after the next head use strict order, and fixtures date the later record explicitly, or the test is flaky (warrant reviews_test V18 failed under unrelated mutants).
 - A ledger column a generated view adds is paid in every case of the selftest that renders the view: the review counts of WITNESSES.md read the records without assessing them (warrant claims selftest, 134 cases).
+- A checker named by the hash of its code signs only from that code, but its seed is an ordinary file: when model sessions held it, they filed the checker's records at their own discretion (warrant #176, #181), and a session that refused left findings NOT REPLAYED (#190). The deployed waker now runs the base's pinned checker on every due head before the reviewer is woken: sandboxed (no network, writes confined to the worktree, the seed directory unreadable), the seed on standard input only, and it pushes only the records that run printed, while the branch is still at that head (warrant #192, W1-W11). On one machine, keeping the seed from agents is still policy, not enforcement.
 
 **Where.**
 
 - `minds`: `REVIEWING.md` — section 0
 - `sokol-core`: `.github/workflows/witness-gate.yml` — signed witnesses as a required check
 - `warrant`: `tools/claimslib/reviews.py` — the pull request review loop as records: duty, head closures, findings as challenges, replayed tests, merge observations; REVIEWS.md
+- `warrant`: `integrations/codex-plugin/waker/waker.py` — Waker.replay: the review replay checker before each wake, sandboxed, seed on stdin
 
 <a id="controlled-forgetting"></a>
 ## Forget by record, never by deletion
