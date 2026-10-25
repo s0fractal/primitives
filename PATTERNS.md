@@ -9,8 +9,10 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - [Admit by evidence, never by an admin](#admission-by-evidence)
 - [Order is witnessed, not claimed](#witnessed-order)
 - [A cache changes cost, never the answer](#verified-cache)
+- [Views as manifests over a content-addressed store; collection by reachability](#content-addressed-views)
 - [Strong review where a mistake is costly, once](#review-economy)
 - [Forget by record, never by deletion](#controlled-forgetting)
+- [A write actor decides from trusted inputs only, binds them, and is exercised](#write-actor)
 
 <a id="claims-are-the-source"></a>
 ## Claims are the source; documents are views
@@ -73,6 +75,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - An assertRaisesRegex failing with "X does not match Y" is no kill: the expected exception was raised, the input is still refused, only the message moved (another layer or the crash net caught it). minds found 23 of 203 such kills. Decide it where assertRaises checks (wrap _AssertRaisesContext.__exit__), not from printed lines: a multi-line message defeated the first line filter (Codex, minds PR #15). An import-time assert that refuses the mutant before the test runs is no kill either.
 - A refusal held by several layers (minds append-only: Check #2, the reader's status and mode checks, then the read of a deleted entry itself; a host guard and the pinned kernel) cannot be burned by guard mutants, even all of them together: its honest status is unburned, with the layers named. Build the vector that only one rule breaks first (delete an orphan atom, not change a mode): an ambiguous vector hides which layer refused.
 - Cargo decides what to rebuild by modification time: mutants built into a shared target were served the previous mutant's build (three false kills in minds). Build each kernel mutant in a fresh target, and refuse a build byte-equal to the pinned kernel as equivalent.
+- A test that fixes the step count while halving dt cannot see a defect whose error grows with simulated time: the starter PDF's energy test for the port-Hamiltonian kernel shows orders 4.4 and 2.4 for an explicit gyroscopic kick that diverges to 6e20 over 10^4 steps. Fix the horizon, not the step count, and name the kick as the mutant the test must kill (lab phs-soliton test 1, starter check C4a).
 
 **Where.**
 
@@ -84,6 +87,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - `primitives`: `tools/p256_decode.py` — --selftest: every negative bites
 - `warrant`: `tools/claimslib/why.py` — why FILE:LINE: a statement -> the mutants that change it -> the BACKED claims citing them -> obligations -> goals; why --uncovered: the statements no cited mutant changes
 - `warrant`: `tests/generated_mutants.py` — generated mutants and survivors: discovery, never backing; .github/workflows/survivors.yml weekly, with claims.py audit pairs
+- `lab`: `phs-soliton/tools/run_mutants.py` — mutants.json; every named test must fail on an assertion (all, not any), the baseline must pass first, a fresh pycache_prefix per test under ignored runs/
 
 <a id="generate-or-refuse"></a>
 ## Generate or refuse; do not enumerate or parse
@@ -207,6 +211,32 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - `warrant`: `warrant/store.py` — _verdict, Verdicts: authentication verdicts by (trust digest, record id, sha256 of the bytes), MACed with the code identity under the owner's secret; Store(root, verdicts=DIR), assess(verdicts=DIR), `--verdicts DIR` (F44, #175)
 - `warrant`: `warrant/compute.py` — ReplayCache: verified replays by provider identity and exact chain, consulted only when every byte is in the view (SPEC §7); its entries are not MACed
 
+<a id="content-addressed-views"></a>
+## Views as manifests over a content-addressed store; collection by reachability
+
+**Problem.** A frozen view that copies every byte it may answer from costs a whole store per view: the reader's guarantee (later changes alter nothing it reads) is bought with unbounded disk, and nothing ever decides which copies may go.
+
+**Form.**
+
+- One object store per owner, every object named by the SHA-256 of its bytes (git's loose objects, minds cas/): written once by linking a complete read-only file into place, so a name is never overwritten by a racing writer. Bytes under a name that do not hash to it are damage; the only replacement is the bytes that do, which can only restore what every reader of the name pins.
+- A view is a small manifest, itself an object, naming everything it answers from by hash: a tree (the listing, shared by every view of the same store state), the report body (shared while it is the same), the code it ran; a per-view pointer names the manifest. Bytes that may not be what their outer name says (a record file under a record id) are stored under their own hash, and the tree maps the outer name to it.
+- Every read hashes what it read; an absent or damaged object is a typed refusal, never a read from the live source. The frozen guarantee is then structural: objects only ever get added, and a manifest pins exact names.
+- Collection is mark and sweep from the live manifests only: expired views go first, then every object no live manifest reaches. Everything else keeps its own bytes and is never a root or touched (drafts, staging, journals); the source store is never touched.
+- Close the race by the lock, not by timing: a writer holds it shared from its first object until its manifest is reachable, a collector exclusively; readers take none, and a reader whose view expired under it is told so, not that the bytes are damaged. An opportunistic collection tries the lock without waiting, after the writer has released it.
+
+**Lessons.**
+
+- warrant-agent views were full copies: 45 views of a 1500-record store took 756 MB and 127 128 files on disk (Codex's real state reached 720 MB). As manifests over one object store: 18 MB and 2 964 files, 3 files and 12 KB per view, and context got faster (1.12 s to 0.65 s) because unchanged objects are compared, not rewritten (warrant #184, tests/agent_views_test.py J01-J16, mutants A114-A131).
+- Split what differs from what is shared before hashing it: two reports of an unchanged store differed only in their assessment id and as_of, so the report body is one shared object and the manifest carries the two fields.
+- Do not name an object by an identity its bytes may not have: a store can hold, under a record id, bytes that are not that record, and the view must show them as they were. Name every object by its own bytes and map the outer name in the tree.
+- Carry the source's own anomalies in the tree: the copying views dropped the store's misfiled entries, so the assessed snapshot never matched the captured one and every context of a store with a stray file was refused; a tree that lists them reproduces the store read exactly.
+
+**Where.**
+
+- `warrant`: `warrant_agent/objects.py` — the workspace's object store: put (link once, repair damage), get (hash on read), snapshot under admission limits, the shared/exclusive lock
+- `warrant`: `warrant_agent/views.py` — capture writes objects and a manifest under the shared lock; load resolves through it; collect marks from live manifests and sweeps; collect_due at a capture by gc_interval; `warrant-agent gc` (SPEC §10.2)
+- `minds`: `VARS-1-SPEC.md` — §3: cas/{atoms,cells,seals}/<2 hex>/<62 hex>, every entry's bytes hash to its path
+
 <a id="review-economy"></a>
 ## Strong review where a mistake is costly, once
 
@@ -222,12 +252,17 @@ Methods our projects share, as forms with their instances and lessons: shared me
 **Lessons.**
 
 - minds PR #4 took ten rounds; six were on tooling that section 0 had already exempted.
+- A review the reviewer does not sign itself is prose relayed by hand: warrant's review loop ran 30+ times as REVIEW.md, chat and copy-paste. As records, ACCEPT is the reviewer's own accept of one head's closure, AMEND its challenge carrying a finding, and a finding with a test is replayed at each later head (reproduces / no longer reproduces) by a checker named by its code; a finding without one stays a labelled thesis.
+- Name what was reviewed by its full commit id, and what merged by its merge commit's second parent: acceptance is read from the tip's own store, so an acceptance filed after the merge does not turn it into a reviewed merge; a merge is a Git act, observed, never a closure.
+- Across actors only the signed `at` orders records: a same-second tie is not 'later'. Rules that ask whether a finding came after the next head use strict order, and fixtures date the later record explicitly, or the test is flaky (warrant reviews_test V18 failed under unrelated mutants).
+- A ledger column a generated view adds is paid in every case of the selftest that renders the view: the review counts of WITNESSES.md read the records without assessing them (warrant claims selftest, 134 cases).
 - A checker named by the hash of its code signs only from that code, but its seed is an ordinary file: when model sessions held it, they filed the checker's records at their own discretion (warrant #176, #181), and a session that refused left findings NOT REPLAYED (#190). The deployed waker now runs the base's pinned checker on every due head before the reviewer is woken: sandboxed (no network, writes confined to the worktree, the seed directory unreadable), the seed on standard input only, and it pushes only the records that run printed, while the branch is still at that head (warrant #192, W1-W11). On one machine, keeping the seed from agents is still policy, not enforcement.
 
 **Where.**
 
 - `minds`: `REVIEWING.md` — section 0
 - `sokol-core`: `.github/workflows/witness-gate.yml` — signed witnesses as a required check
+- `warrant`: `tools/claimslib/reviews.py` — the pull request review loop as records: duty, head closures, findings as challenges, replayed tests, merge observations; REVIEWS.md
 - `warrant`: `integrations/codex-plugin/waker/waker.py` — Waker.replay: the review replay checker before each wake, sandboxed, seed on stdin
 
 <a id="controlled-forgetting"></a>
@@ -246,3 +281,31 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - `sokol-core`: `docs/RETIRED.md`
 - `workspace`: `ARCHIVED-WORKSPACE.md` — ~/Projects tombstone
 - `workspace`: `ARCHIVED-REPOSITORIES.md`
+
+<a id="write-actor"></a>
+## A write actor decides from trusted inputs only, binds them, and is exercised
+
+**Problem.** An agent or workflow allowed to merge, publish or sign by itself is only as good as the inputs it reads at the moment of the write, and a gate never run on a real case is no evidence that it works.
+
+**Form.**
+
+- One predicate decides, and its twin (the condition for asking a reviewer) shares every fact and rule with it; formats are functions of the one result, never second copies of the logic.
+- Only trusted code runs: the base branch's, at the exact commit the forge reports for it. The candidate is read as data (Git objects: ls-tree, cat-file, diff-tree), never checked out, installed or run.
+- Authority comes from the base, never from the candidate: configuration, role pins and the trust built from them.
+- Every derived input is refused unless it is exactly what it claims: regular files named by their content address, no symlinks or submodules, checks bound to the workflow file that produced them and to the app that posted them.
+- The write binds what was read (the forge refuses the merge when the head moved), after reading the base and the candidate again just before it.
+- Holds the owner controls without code (a label, a repository variable, disabling the workflow); every refusal reason written where the owner reads it; changes to what decides merging are reviewed, and merged by the owner.
+- Negative tests assert the exact set of refusal codes, so a mutant removing one rule is seen even when another rule also refuses.
+
+**Lessons.**
+
+- warrant's autonomy envelope 0.1 was retired without ever merging anything: every production run stopped because the workflow token could not read the branch-protection endpoint it depended on (history/AUTONOMY-ENVELOPE-0.1-RETIREMENT.md at the tag history/warrant-0.x-2026-10-18). Read only what the actor's own token can read, and exercise the write on a real case before relying on it.
+- A required check is a name: any workflow of the pull request can post a job called `test`. Bind each required check to its workflow file through its check suite, and refuse a check of that name from another workflow (warrant merge-on-acceptance, G18).
+- A merge made with a workflow's GITHUB_TOKEN starts no push workflow: dispatch the base branch's CI after it, or master CI silently stops running (warrant merge-on-acceptance, G23).
+- A gate that can merge changes to its own rules lets the acceptor widen its own authority: the gate's configuration, pins, workflows and predicate are owner paths (warrant .warrant/merge.json owner_paths, G29-G30).
+
+**Where.**
+
+- `warrant`: `tools/claimslib/eligibility.py` — merge-eligible and due-for-review from one predicate; the pull request's head read as Git objects under the base's pins
+- `warrant`: `.github/workflows/merge-on-acceptance.yml` — base code only; at most one merge per run, bound to the assessed head; master CI dispatched after it
+- `warrant`: `integrations/codex-plugin/waker/waker.py` — runs the base tree's due predicate and wakes the reviewer once per head
