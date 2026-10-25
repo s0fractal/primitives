@@ -61,8 +61,6 @@
    "instances": [
     {"repo": "minds", "path": "tools/run_mutants.py", "note": "mutants.json; TwinDivergence also counts as a kill; tools/mutant_test.py decides wording-only failures inside assertRaises (PR #15)"},
     {"repo": "warrant", "path": "tests/mutants.py", "note": "cited per claim in SPEC-CLAIMS.md; BASELINE_RED guard, --shard K/N and --merge (PR #172)"},
-    {"repo": "warrant-pdf", "path": "tools/mutants.json", "note": ""},
-    {"repo": "warrant-vet", "path": "tools/mutants.json", "note": ""},
     {"repo": "sokol-core", "path": ".cargo/mutants.toml", "note": "cargo-mutants"},
     {"repo": "primitives", "path": "tools/p256_decode.py", "note": "--selftest: every negative bites"},
     {"repo": "warrant", "path": "tools/claimslib/why.py", "note": "why FILE:LINE: a statement -> the mutants that change it -> the BACKED claims citing them -> obligations -> goals; why --uncovered: the statements no cited mutant changes"},

@@ -81,8 +81,6 @@ Methods our projects share, as forms with their instances and lessons: shared me
 
 - `minds`: `tools/run_mutants.py` — mutants.json; TwinDivergence also counts as a kill; tools/mutant_test.py decides wording-only failures inside assertRaises (PR #15)
 - `warrant`: `tests/mutants.py` — cited per claim in SPEC-CLAIMS.md; BASELINE_RED guard, --shard K/N and --merge (PR #172)
-- `warrant-pdf`: `tools/mutants.json`
-- `warrant-vet`: `tools/mutants.json`
 - `sokol-core`: `.cargo/mutants.toml` — cargo-mutants
 - `primitives`: `tools/p256_decode.py` — --selftest: every negative bites
 - `warrant`: `tools/claimslib/why.py` — why FILE:LINE: a statement -> the mutants that change it -> the BACKED claims citing them -> obligations -> goals; why --uncovered: the statements no cited mutant changes
