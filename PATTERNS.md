@@ -22,7 +22,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 **Form.**
 
 - Each normative sentence or assurance row is a record: id, text, witnesses (tests, proofs), mutants, status (proved, tested, unburned, assumed, informative...).
-- The human document, or the part of it that carries claims, is generated from the records; CI refuses a view that differs from the rendering.
+- A document published as a contract (cited by digest, linked from a release) is generated from the records and committed; CI refuses one that differs from the rendering. Every other view of the records is a build artifact: rendered by CI, checked for determinism, never committed; questions go to the records by query.
 - Debt is listed, never hidden: a claim with no witness or no biting mutant is shown as such.
 
 **Lessons.**
@@ -33,12 +33,13 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - A view of superseding records orders a lineage by the supersession chain, never by id or time alone: records filed in the same second tie on `at`, and ordering by id printed a reformulated goal before the one it replaced (warrant tools/roadmap.py, roadmap_test P6).
 - A view's state label says what the engine decided, not only what the holder must do next: a discharge the engine held UNMET_CONDITION (its prerequisite still open) read 'no closure filed' in ROADMAP.md (warrant tools/roadmap.py need, roadmap_test P14).
 - One mechanism for every contract: an application interface's rules go into the same claims document as a new pinned section, not into a second claims tool or document (warrant SPEC §10, the agent interface: 86 claims; AGENT.md became the operator's guide pointing to it). The tool needed only the placement of a new section's heading and first sentence (claims.py heading --section N, add --after N).
+- Projections are build artifacts, not sources. warrant committed four views of its record store (SPEC-CLAIMS.md, ROADMAP.md, REVIEWS.md, WITNESSES.md), byte-compared by CI. Every parallel pull request re-rendered them, so they conflicted on nearly every merge (GitHub runs no pull_request workflow on a conflicting branch: warrant #197), the merge gate needed a clause admitting them after the accepted head, the review waker and the reviewer had to regenerate and commit them, and nobody read them. Since warrant #209 they are written to build/views/ and uploaded by CI; `tools/graph.py views --check` renders them in three processes (two other hash seeds) and refuses a difference, a determinism check in place of a comparison with a committed copy; the gate's tail is records and blobs only; and questions go to the graph by query (path, why, frontier, impact, delta, export; the MCP tool warrant_graph). Only published contracts stay committed: SPEC.md, and PILOT.md, which accepted closures cite by digest.
 
 **Where.**
 
-- `warrant`: `tools/claimslib` — normative SPEC.md sentences filed as Warrant 2 records in .warrant/store; SPEC-CLAIMS.md is the generated view (tools/claims.py is the command; one module per responsibility since warrant #176)
-- `warrant`: `SPEC-CLAIMS.md` — generated; `tools/claims.py check` refuses a differing file
-- `warrant`: `tools/roadmap.py` — goals (unowned questions) and obligations (duties that answer them) as Warrant 2 records in .warrant/store; ROADMAP.md is the generated view, byte-compared; nothing renders into SPEC.md
+- `warrant`: `tools/claimslib` — normative SPEC.md sentences filed as Warrant 2 records in .warrant/store; SPEC-CLAIMS.md is a generated view, a build artifact since G11 (tools/claims.py is the command; one module per responsibility since warrant #176)
+- `warrant`: `tools/graph.py` — the record graph by query (path, why, frontier, impact, delta, export) over warrant_agent/graph.py; `views --check`: the Markdown projections as build artifacts, rendered in three processes and compared (G11)
+- `warrant`: `tools/roadmap.py` — goals (unowned questions) and obligations (duties that answer them) as Warrant 2 records in .warrant/store; ROADMAP.md is a generated view, a build artifact since G11; nothing renders into SPEC.md
 - `minds`: `assurance.json` — ASSURANCE.md rendered from it, byte-compared (PR #4)
 - `minds`: `tools/check_claims.py` — claims.json quotes every spec block; the spec itself is still split by hand (open: spec as a projection of its parts)
 - `sokol-core`: `scripts/check-claims.sh` — every test, metric, flag, ADR or path a document cites must exist; an empty scope fails
@@ -81,7 +82,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 **Where.**
 
 - `minds`: `tools/run_mutants.py` — mutants.json; TwinDivergence also counts as a kill; tools/mutant_test.py decides wording-only failures inside assertRaises (PR #15)
-- `warrant`: `tests/mutants.py` — cited per claim in SPEC-CLAIMS.md; BASELINE_RED guard, --shard K/N and --merge (PR #172)
+- `warrant`: `tests/mutants.py` — cited per claim in the claim records (tools/graph.py path SPEC-…); BASELINE_RED guard, --shard K/N and --merge (PR #172)
 - `sokol-core`: `.cargo/mutants.toml` — cargo-mutants
 - `primitives`: `tools/p256_decode.py` — --selftest: every negative bites
 - `warrant`: `tools/claimslib/why.py` — why FILE:LINE: a statement -> the mutants that change it -> the BACKED claims citing them -> obligations -> goals; why --uncovered: the statements no cited mutant changes
@@ -110,7 +111,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 
 - `minds`: `tools/minds_chain.py` — profile_at: SHA-256 of every tracked file; a symlink or submodule refused
 - `minds`: `assurance.json`
-- `warrant`: `SPEC-CLAIMS.md`
+- `warrant`: `tools/claimslib/views.py` — SPEC-CLAIMS.md rendered from the records (a build artifact since G11)
 - `warrant`: `warrant/shapes.py` — hex64, hex128, the view token, the question reference and the actor id, defined once; tests/shapes_test.py S6 refuses a hex pattern written anywhere else
 - `warrant`: `tests/agent_repo_test.py` — Q01 reads AGENT.md's roadmap recipe and compares stores byte for byte with tools/roadmap.py; Q02 runs it over stdio MCP
 
