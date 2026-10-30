@@ -79,6 +79,8 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - A test that fixes the step count while halving dt cannot see a defect whose error grows with simulated time: the starter PDF's energy test for the port-Hamiltonian kernel shows orders 4.4 and 2.4 for an explicit gyroscopic kick that diverges to 6e20 over 10^4 steps. Fix the horizon, not the step count, and name the kick as the mutant the test must kill (lab phs-soliton test 1, starter check C4a).
 - When an edit changes a line that several mutants target, re-check every mutant whose find text contains the old text, not only the ones the change names: warrant PR #195 retargeted M576 and M577 after moving the walker's depth check and missed M592, which went BAD_MUTANT on the same "if dep in objects" text (CI mutants 3/4, run 40187522296; fixed in a7eebef). Before committing, search the mutant list for the old line, and run every mutant that matches it.
 - Run one mutant by hand before trusting a new runner's first table: minds G6 (PR #40) first copied the mutated module into a temporary directory, where its sibling import failed, and all 17 mutants read as survived; the copy now sits beside the original and imports as it does. A mutant that deletes the only line of an `if` body is a syntax error, a crash and not a kill: replace the line with `pass` (m-contrast-worst).
+- A skip reports ok, and a crash can report a verdict. minds' test 25 skipped when the chain ref was absent, so only CI's fetch step stood between it and a green no-op; MINDS_REQUIRE_CHAIN=1 now turns that skip into a failure in the job that provides the ref (open-ontologies' OO_REQUIRE_FIXTURES). An uncaught Python error exits 1, the code of a refusal or a negative verdict; minds' witness checker and offline verifier now exit 3 on one, a code no verdict uses (minds PR #48).
+- A verdict reached under a weaker assumption gets a word of its own, or the output alone cannot say which was reached: minds' inspect-attestation, which pins no keys, printed `accepted`, the word of verify-attestation, and now prints `accepted_under_own_policy` (minds PR #48; open-ontologies decision 0003, `entailed` against `entailed_under_supplied_rules`). Burn the distinction with a mutant that lets both words through.
 
 **Where.**
 
@@ -90,7 +92,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - `warrant`: `tests/generated_mutants.py` — generated mutants and survivors: discovery, never backing; .github/workflows/survivors.yml weekly, with claims.py audit pairs
 - `lab`: `phs-soliton/tools/run_mutants.py` — mutants.json; every named test must fail on an assertion (all, not any), the baseline must pass first, a fresh pycache_prefix per test under ignored runs/
 - `minds`: `experiments/g6/test_g6.py` — --mutants: an experiment's generator, renderings and scorer (mutants.json beside it); the mutated copy is written beside g6.py and run against the named test, which must fail on an assertion (PR #40)
-- `minds`: `experiments/witness/test_witness.py` — --mutants: 32 mutants of an independent proof-term checker; the named tests run unmutated first and a red baseline is refused, each mutant runs without a bytecode cache (PR #46)
+- `minds`: `experiments/witness/test_witness.py` — --mutants: 35 mutants of an independent proof-term checker; the named tests run unmutated first and a red baseline is refused, each mutant runs without a bytecode cache (PR #46)
 
 <a id="generate-or-refuse"></a>
 ## Generate or refuse; do not enumerate or parse
@@ -131,12 +133,13 @@ Methods our projects share, as forms with their instances and lessons: shared me
 **Lessons.**
 
 - Independent code is not independent evidence: minds' witness checker (experiments/witness/check.py, PR #46) shares no code with the lens, but the absences it relies on (no cell invalidates the decision's cone, no INVALID verdict on it) are read over the same store, so a complete forged store fools both. Split what a checker proves from bytes (hashes, signatures, keys fixed by the asked id) from what it reads under a closed-world assumption, and say which input the latter rests on.
+- Evidence must read one way: Python's json keeps the last value of a repeated key and other readers the first, so a witness term or bundle naming a key twice has two readings and two correct readers can check different decisions (open-ontologies decision 0008: two verified kernels disagreed over a repeated binding key, and the defect was in the format). warrant's jcs.py and sigma's sigma_resume already refused repeated keys; minds' witness checker and offline verifier read them last-wins until minds PR #48. Refuse the repeated key at the parser of every untrusted input, and refuse NaN, Infinity and -Infinity there too: Python's json reads them and JSON does not have them (Codex finding fb410499 on minds #48, after the first fix set only object_pairs_hook; warrant's jcs.py sets parse_constant as well). A canonical-bytes check (re-serialise and compare) refuses the repeated key too. The `canon` vectors take a parsed body and cannot hold one: a class of raw-bytes vectors would need a probe in every reader, and is not built.
 
 **Where.**
 
 - `primitives`: `catalog.json` — classes, boundaries, bite proofs, registered implementations
 - `primitives`: `run.py`
-- `minds`: `experiments/witness/check.py` — a proof-term checker for 'Settled at a tip' with its own parsers and Ed25519 and the spec's constants, no code of vars1.py; held to the lens by an exhaustive subset test (222 terms on two G6 histories) and to RFC 8032 by its vectors
+- `minds`: `experiments/witness/check.py` — a proof-term checker for 'Settled at a tip' with its own parsers and Ed25519 and the spec's constants, no code of vars1.py; held to the lens by an exhaustive subset test (222 terms on two G6 histories) and to RFC 8032 by its vectors; a term that names a key twice is refused, not read last-wins (minds PR #48)
 
 <a id="admission-by-evidence"></a>
 ## Admit by evidence, never by an admin
