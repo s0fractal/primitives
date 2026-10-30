@@ -69,7 +69,8 @@
     {"repo": "warrant", "path": "tools/claimslib/why.py", "note": "why FILE:LINE: a statement -> the mutants that change it -> the BACKED claims citing them -> obligations -> goals; why --uncovered: the statements no cited mutant changes"},
     {"repo": "warrant", "path": "tests/generated_mutants.py", "note": "generated mutants and survivors: discovery, never backing; .github/workflows/survivors.yml weekly, with claims.py audit pairs"},
     {"repo": "lab", "path": "phs-soliton/tools/run_mutants.py", "note": "mutants.json; every named test must fail on an assertion (all, not any), the baseline must pass first, a fresh pycache_prefix per test under ignored runs/"},
-    {"repo": "minds", "path": "experiments/g6/test_g6.py", "note": "--mutants: an experiment's generator, renderings and scorer (mutants.json beside it); the mutated copy is written beside g6.py and run against the named test, which must fail on an assertion (PR #40)"}
+    {"repo": "minds", "path": "experiments/g6/test_g6.py", "note": "--mutants: an experiment's generator, renderings and scorer (mutants.json beside it); the mutated copy is written beside g6.py and run against the named test, which must fail on an assertion (PR #40)"},
+    {"repo": "minds", "path": "experiments/witness/test_witness.py", "note": "--mutants: 32 mutants of an independent proof-term checker; the named tests run unmutated first and a red baseline is refused, each mutant runs without a bytecode cache (PR #46)"}
    ]
   },
   {
@@ -103,10 +104,13 @@
     "Behaviour lives as vectors with provenance; each implementation keeps its own code and answers a small probe.",
     "Negatives must be shown to bite: each reject vector is rejected for the reason it names."
    ],
-   "lessons": [],
+   "lessons": [
+    "Independent code is not independent evidence: minds' witness checker (experiments/witness/check.py, PR #46) shares no code with the lens, but the absences it relies on (no cell invalidates the decision's cone, no INVALID verdict on it) are read over the same store, so a complete forged store fools both. Split what a checker proves from bytes (hashes, signatures, keys fixed by the asked id) from what it reads under a closed-world assumption, and say which input the latter rests on."
+   ],
    "instances": [
     {"repo": "primitives", "path": "catalog.json", "note": "classes, boundaries, bite proofs, registered implementations"},
-    {"repo": "primitives", "path": "run.py", "note": ""}
+    {"repo": "primitives", "path": "run.py", "note": ""},
+    {"repo": "minds", "path": "experiments/witness/check.py", "note": "a proof-term checker for 'Settled at a tip' with its own parsers and Ed25519 and the spec's constants, no code of vars1.py; held to the lens by an exhaustive subset test (222 terms on two G6 histories) and to RFC 8032 by its vectors"}
    ]
   },
   {
