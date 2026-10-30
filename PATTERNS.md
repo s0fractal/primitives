@@ -61,6 +61,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 
 - A mutant killed only by a diagnostic's wording proves no lost refusal: check that the refusal disappears, not that its message changes (minds PR #4, rounds 1-2).
 - A mutant that becomes equivalent after a redesign must be retargeted or removed, not kept as a green number.
+- A relative claim (A no worse than B) is green when the instrument reads nothing: two decoders that read neither arm tie at the floor and 'support' parity. Pair the relative test with an absolute adequacy condition on the reference arm, and name a mutant that drops it (lab phs-clock PREREG D12, Codex r1 F3, mutant M20). In the confirmatory run the condition held (the honest decoder read Pure-PHS 0.10-0.21 above its own readout), so H1 CONTRADICTED is about the memory, not a blind decoder.
 - Give every mutant run a fresh bytecode cache: an earlier same-size mutant's cache can be loaded instead (minds tools/run_mutants.py, PR #4 round 3).
 - End-to-end vectors can be blind to a component's refusals; measure with a mutant before trusting them (primitives p256-decode).
 - A guard is burned only when removing it lets the forbidden write happen. If the code right after the guard would crash without it, the mutant is killed by the crash and proves nothing: make that code total, so the lost property is what the mutant exposes (warrant PR #170: M327 and M335 were first killed by an IndexError).
@@ -93,6 +94,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - `lab`: `phs-soliton/tools/run_mutants.py` — mutants.json; every named test must fail on an assertion (all, not any), the baseline must pass first, a fresh pycache_prefix per test under ignored runs/
 - `minds`: `experiments/g6/test_g6.py` — --mutants: an experiment's generator, renderings and scorer (mutants.json beside it); the mutated copy is written beside g6.py and run against the named test, which must fail on an assertion (PR #40)
 - `minds`: `experiments/witness/test_witness.py` — --mutants: 35 mutants of an independent proof-term checker; the named tests run unmutated first and a red baseline is refused, each mutant runs without a bytecode cache (PR #46)
+- `lab`: `phs-clock/mutants.py` — a PREREG's frozen analysis and admission (28 mutants, mutants.json) on phs-soliton's harness; an equivalent mutant (inside the EPS slack) was removed, a KeyError kill rewritten to fail on an assertion (lab #11)
 
 <a id="generate-or-refuse"></a>
 ## Generate or refuse; do not enumerate or parse
@@ -115,6 +117,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 **Where.**
 
 - `minds`: `tools/minds_chain.py` — profile_at: SHA-256 of every tracked file; a symlink or submodule refused
+- `lab`: `phs-clock/run.py` — source_problems: the whole repository outside the two output paths against the PREREG tag, committed additions and untracked files included; hashing the tag's files plus a dirty-tree check let a clean committed phs-clock/numpy.py through (Codex r1 F2, lab #11)
 - `minds`: `assurance.json`
 - `warrant`: `tools/claimslib/views.py` — SPEC-CLAIMS.md rendered from the records (a build artifact since G11)
 - `warrant`: `warrant/shapes.py` — hex64, hex128, the view token, the question reference and the actor id, defined once; tests/shapes_test.py S6 refuses a hex pattern written anywhere else
