@@ -90,6 +90,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - `warrant`: `tests/generated_mutants.py` — generated mutants and survivors: discovery, never backing; .github/workflows/survivors.yml weekly, with claims.py audit pairs
 - `lab`: `phs-soliton/tools/run_mutants.py` — mutants.json; every named test must fail on an assertion (all, not any), the baseline must pass first, a fresh pycache_prefix per test under ignored runs/
 - `minds`: `experiments/g6/test_g6.py` — --mutants: an experiment's generator, renderings and scorer (mutants.json beside it); the mutated copy is written beside g6.py and run against the named test, which must fail on an assertion (PR #40)
+- `minds`: `experiments/witness/test_witness.py` — --mutants: 32 mutants of an independent proof-term checker; the named tests run unmutated first and a red baseline is refused, each mutant runs without a bytecode cache (PR #46)
 
 <a id="generate-or-refuse"></a>
 ## Generate or refuse; do not enumerate or parse
@@ -127,10 +128,15 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - Behaviour lives as vectors with provenance; each implementation keeps its own code and answers a small probe.
 - Negatives must be shown to bite: each reject vector is rejected for the reason it names.
 
+**Lessons.**
+
+- Independent code is not independent evidence: minds' witness checker (experiments/witness/check.py, PR #46) shares no code with the lens, but the absences it relies on (no cell invalidates the decision's cone, no INVALID verdict on it) are read over the same store, so a complete forged store fools both. Split what a checker proves from bytes (hashes, signatures, keys fixed by the asked id) from what it reads under a closed-world assumption, and say which input the latter rests on.
+
 **Where.**
 
 - `primitives`: `catalog.json` — classes, boundaries, bite proofs, registered implementations
 - `primitives`: `run.py`
+- `minds`: `experiments/witness/check.py` — a proof-term checker for 'Settled at a tip' with its own parsers and Ed25519 and the spec's constants, no code of vars1.py; held to the lens by an exhaustive subset test (222 terms on two G6 histories) and to RFC 8032 by its vectors
 
 <a id="admission-by-evidence"></a>
 ## Admit by evidence, never by an admin
