@@ -78,6 +78,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - Cargo decides what to rebuild by modification time: mutants built into a shared target were served the previous mutant's build (three false kills in minds). Build each kernel mutant in a fresh target, and refuse a build byte-equal to the pinned kernel as equivalent.
 - A test that fixes the step count while halving dt cannot see a defect whose error grows with simulated time: the starter PDF's energy test for the port-Hamiltonian kernel shows orders 4.4 and 2.4 for an explicit gyroscopic kick that diverges to 6e20 over 10^4 steps. Fix the horizon, not the step count, and name the kick as the mutant the test must kill (lab phs-soliton test 1, starter check C4a).
 - When an edit changes a line that several mutants target, re-check every mutant whose find text contains the old text, not only the ones the change names: warrant PR #195 retargeted M576 and M577 after moving the walker's depth check and missed M592, which went BAD_MUTANT on the same "if dep in objects" text (CI mutants 3/4, run 40187522296; fixed in a7eebef). Before committing, search the mutant list for the old line, and run every mutant that matches it.
+- Run one mutant by hand before trusting a new runner's first table: minds G6 (PR #40) first copied the mutated module into a temporary directory, where its sibling import failed, and all 17 mutants read as survived; the copy now sits beside the original and imports as it does. A mutant that deletes the only line of an `if` body is a syntax error, a crash and not a kill: replace the line with `pass` (m-contrast-worst).
 
 **Where.**
 
@@ -88,6 +89,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - `warrant`: `tools/claimslib/why.py` — why FILE:LINE: a statement -> the mutants that change it -> the BACKED claims citing them -> obligations -> goals; why --uncovered: the statements no cited mutant changes
 - `warrant`: `tests/generated_mutants.py` — generated mutants and survivors: discovery, never backing; .github/workflows/survivors.yml weekly, with claims.py audit pairs
 - `lab`: `phs-soliton/tools/run_mutants.py` — mutants.json; every named test must fail on an assertion (all, not any), the baseline must pass first, a fresh pycache_prefix per test under ignored runs/
+- `minds`: `experiments/g6/test_g6.py` — --mutants: an experiment's generator, renderings and scorer (mutants.json beside it); the mutated copy is written beside g6.py and run against the named test, which must fail on an assertion (PR #40)
 
 <a id="generate-or-refuse"></a>
 ## Generate or refuse; do not enumerate or parse
