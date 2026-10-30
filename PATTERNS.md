@@ -81,6 +81,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - Run one mutant by hand before trusting a new runner's first table: minds G6 (PR #40) first copied the mutated module into a temporary directory, where its sibling import failed, and all 17 mutants read as survived; the copy now sits beside the original and imports as it does. A mutant that deletes the only line of an `if` body is a syntax error, a crash and not a kill: replace the line with `pass` (m-contrast-worst).
 - A skip reports ok, and a crash can report a verdict. minds' test 25 skipped when the chain ref was absent, so only CI's fetch step stood between it and a green no-op; MINDS_REQUIRE_CHAIN=1 now turns that skip into a failure in the job that provides the ref (open-ontologies' OO_REQUIRE_FIXTURES). An uncaught Python error exits 1, the code of a refusal or a negative verdict; minds' witness checker and offline verifier now exit 3 on one, a code no verdict uses (minds PR #48).
 - A verdict reached under a weaker assumption gets a word of its own, or the output alone cannot say which was reached: minds' inspect-attestation, which pins no keys, printed `accepted`, the word of verify-attestation, and now prints `accepted_under_own_policy` (minds PR #48; open-ontologies decision 0003, `entailed` against `entailed_under_supplied_rules`). Burn the distinction with a mutant that lets both words through.
+- A proved checker still reads through a decode. minds' Lean witness checker (vars1witness; theorem witness_sound) checks the store that check.py decoded from bytes, so the theorem states the decode's faithfulness as a hypothesis beside the reader's pin. Four mutants of the decode (kill edges dropped, INVALID verdicts not marked, seals written unverified, a seal's scope replaced) are killed by requiring the proved checker and the unproved one to agree on every term the tests make (minds PR #50). Name each hypothesis a proof rests on, and burn the ones that code can break.
 
 **Where.**
 
@@ -286,12 +287,17 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - A subject leaves the active surface by a retirement record or tombstone that names it, why, and where its bytes are kept.
 - Nothing is recreated from history by default; re-adoption is a new explicit decision.
 
+**Lessons.**
+
+- Retiring an experiment can cut a live dependency: minds' witness tests built their histories with the withdrawn G6 pilot's generator. Move what live code needs first, and show that the moved code gives the same outputs (a fingerprint of histories, kinds and cell ids from the old and the new code; commit ids carry commit times and are left out), then retire the rest with a tombstone naming the commit that keeps its bytes. Files that records cite by line stay unedited (minds PR #49).
+
 **Where.**
 
 - `manifesto`: `CONTROLLED-FORGETTING-0.1.md`
 - `sokol-core`: `docs/RETIRED.md`
 - `workspace`: `ARCHIVED-WORKSPACE.md` — ~/Projects tombstone
 - `workspace`: `ARCHIVED-REPOSITORIES.md`
+- `minds`: `experiments/g6/RETIRED.md` — a withdrawn pilot's harness and run data; its report kept unedited, its generator moved to experiments/witness/histories.py (PR #49)
 
 <a id="write-actor"></a>
 ## A write actor decides from trusted inputs only, binds them, and is exercised
