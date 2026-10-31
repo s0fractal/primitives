@@ -96,6 +96,7 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - `minds`: `experiments/g6/test_g6.py` — --mutants: an experiment's generator, renderings and scorer (mutants.json beside it); the mutated copy is written beside g6.py and run against the named test, which must fail on an assertion (PR #40)
 - `minds`: `experiments/witness/test_witness.py` — --mutants: 35 mutants of an independent proof-term checker; the named tests run unmutated first and a red baseline is refused, each mutant runs without a bytecode cache (PR #46)
 - `lab`: `phs-clock/mutants.py` — a PREREG's frozen analysis and admission (28 mutants, mutants.json) on phs-soliton's harness; an equivalent mutant (inside the EPS slack) was removed, a KeyError kill rewritten to fail on an assertion (lab #11)
+- `time-lab`: `q1-weber/tests/mutants.py` — five mutants of the registered analysis, each killed by a synthetic control on an assertion before the analysis bytes were registered
 
 <a id="generate-or-refuse"></a>
 ## Generate or refuse; do not enumerate or parse
@@ -194,12 +195,14 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - Excluding both branches of a fork looks strict and is a retraction button: a holder forks before its own handover, the handover disappears, and the new holder's admitted work becomes unauthorized. Keep both, list the fork, and let the chain rules fail only the forker's own unordered filings (warrant assessment_test R43, mutant M415).
 - A per-receiver intake log (witnessed birth) is no base order for records that travel as whole-store unions: at the receiver everything arrives in one import and the order falls back to claimed time, so two receivers judge the same records differently. A shared history the receiver trusts (a protected branch's merges) can be a later operand; it is not in the snapshot.
 - Records filed in one second must still follow their chain: an order of (time, id) put a writer's discharge before its own acceptance whenever the discharge had the smaller id (warrant SPEC-4-7, assessment_test R48).
+- A chain orders a writer's records among themselves, never against the world, and a pre-registration must show that its data came after it. time-lab derives every seed of its data from the registration's id (the hypotheses and the analysis code cannot be fitted to data that depend on them) and from the first drand round dated at or after the GitHub-witnessed push holding the registration (the data could not exist earlier, and a private re-roll of the registration cannot reach a round before its own publication). q1-weber: push 2026-10-31T01:56:26Z, round 33536141 one second later. The core has no notion of either anchor; they live in tools and in an attest's body (time-lab METHOD.md N2).
 
 **Where.**
 
 - `minds`: `vars1.py` — the gate: refs/vars/heads/<scope> is a linear chain moved by `git update-ref` compare-and-swap; append-only checked by `git diff-tree --diff-filter=a`; birth = first commit holding an object (VARS-1 §3, §4.1)
 - `warrant`: `warrant/engine.py` — View._chains / before / ordered; Holders.at(pos, filing): a filer's own records in chain order (SPEC-4-8..4-10, SPEC-4.1-11/12)
 - `warrant`: `warrant/store.py` — Store.append / Store.extend: prev from the actor's head under a lock on records/; warrant-agent commit refuses CHAIN_MOVED
+- `time-lab`: `tools/tl.py` — beacon: the earliest push GitHub's activity API reports holding the registration, the first drand quicknet round after it, filed as an attest on the registration; run.py seeds from both
 
 <a id="verified-cache"></a>
 ## A cache changes cost, never the answer
