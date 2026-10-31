@@ -249,14 +249,16 @@
     "Nothing is recreated from history by default; re-adoption is a new explicit decision."
    ],
    "lessons": [
-    "Retiring an experiment can cut a live dependency: minds' witness tests built their histories with the withdrawn G6 pilot's generator. Move what live code needs first, and show that the moved code gives the same outputs (a fingerprint of histories, kinds and cell ids from the old and the new code; commit ids carry commit times and are left out), then retire the rest with a tombstone naming the commit that keeps its bytes. Files that records cite by line stay unedited (minds PR #49)."
+    "Retiring an experiment can cut a live dependency: minds' witness tests built their histories with the withdrawn G6 pilot's generator. Move what live code needs first, and show that the moved code gives the same outputs (a fingerprint of histories, kinds and cell ids from the old and the new code; commit ids carry commit times and are left out), then retire the rest with a tombstone naming the commit that keeps its bytes. Files that records cite by line stay unedited (minds PR #49).",
+    "An ignored run directory is not a place where bytes are kept: at the close of lab's PHS line, phs-soliton v1's 160 checkpoints had lived only in a session worktree's ignored runs/, which was later removed. Its manifests carry every registered metric, but no new state-level analysis of the v1 models (the later honest decoder, for one) is possible without retraining; phs-clock (60 checkpoints, 5 MB) and fringes (35 in a 1.3 MiB snapshot) committed theirs and can re-decode. Commit or archive the weights when the verdict lands, and name what was lost in the closure record (lab CLOSED.md)."
    ],
    "instances": [
     {"repo": "manifesto", "path": "CONTROLLED-FORGETTING-0.1.md", "note": ""},
     {"repo": "sokol-core", "path": "docs/RETIRED.md", "note": ""},
     {"repo": "workspace", "path": "ARCHIVED-WORKSPACE.md", "note": "~/Projects tombstone"},
     {"repo": "workspace", "path": "ARCHIVED-REPOSITORIES.md", "note": ""},
-    {"repo": "minds", "path": "experiments/g6/RETIRED.md", "note": "a withdrawn pilot's harness and run data; its report kept unedited, its generator moved to experiments/witness/histories.py (PR #49)"}
+    {"repo": "minds", "path": "experiments/g6/RETIRED.md", "note": "a withdrawn pilot's harness and run data; its report kept unedited, its generator moved to experiments/witness/histories.py (PR #49)"},
+    {"repo": "lab", "path": "CLOSED.md", "note": "a closed research line kept in place: three directories stay as results, no new runs; names where each part of the bytes is kept and the v1 checkpoints as lost"}
    ]
   },
   {
