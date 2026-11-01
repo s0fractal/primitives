@@ -337,9 +337,11 @@ Methods our projects share, as forms with their instances and lessons: shared me
 - A required check is a name: any workflow of the pull request can post a job called `test`. Bind each required check to its workflow file through its check suite, and refuse a check of that name from another workflow (warrant merge-on-acceptance, G18).
 - A merge made with a workflow's GITHUB_TOKEN starts no push workflow: dispatch the base branch's CI after it, or master CI silently stops running (warrant merge-on-acceptance, G23).
 - A gate that can merge changes to its own rules lets the acceptor widen its own authority: the gate's configuration, pins, workflows and predicate are owner paths (warrant .warrant/merge.json owner_paths, G29-G30).
+- A verifier's checks are its own code, run on another commit: minds `verify-release` reruns today's `run_checks` on each release's commit. A check added for new work would fail every older release still awaiting a verdict on a file its commit never had, and record INVALID under the member's key. Run each check only where the commit carries what it checks (minds `witness_checks`, as `kernel_checks` before it), and exercise it on a real pending release in the fresh clone the verifier uses, with the chain as that release was recorded (minds test 100; the 12 releases awaiting antigravity carry no witness suite).
 
 **Where.**
 
 - `warrant`: `tools/claimslib/eligibility.py` — merge-eligible and due-for-review from one predicate; the pull request's head read as Git objects under the base's pins
 - `warrant`: `.github/workflows/merge-on-acceptance.yml` — base code only; at most one merge per run, bound to the assessed head; master CI dispatched after it
 - `warrant`: `integrations/codex-plugin/waker/waker.py` — runs the base tree's due predicate and wakes the reviewer once per head
+- `minds`: `tools/minds_chain.py` — witness_checks and kernel_checks: a release check runs only where the released commit carries it, so verify-release of older releases is unchanged
