@@ -253,7 +253,6 @@ Methods our projects share, as forms with their instances and lessons: shared me
 **Where.**
 
 - `warrant`: `warrant/store.py` — _verdict, Verdicts: authentication verdicts by (trust digest, record id, sha256 of the bytes), MACed with the code identity under the owner's secret; Store(root, verdicts=DIR), assess(verdicts=DIR), `--verdicts DIR` (F44, #175)
-- `warrant`: `warrant_pilot/compute.py` — ReplayCache: verified replays by provider identity and exact chain, consulted only when every byte is in the view (SPEC §7); its entries are not MACed
 
 <a id="content-addressed-views"></a>
 ## Views as manifests over a content-addressed store; collection by reachability
