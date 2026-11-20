@@ -29,15 +29,51 @@
     "Retiring a runtime module does not retire its place in historical metadata: removing lens1c from minds' release-profile inventory changed three already recorded profile ids. PR #22 restores the inventory row without reactivating the module; the original profile ids again reproduce on all 15 profiled releases, versus 12 on the base. Test the historical mapping when changing what a content-derived profile lists."
    ],
    "instances": [
-    {"repo": "warrant", "path": "tools/claimslib", "note": "normative SPEC.md sentences filed as Warrant 2 records in .warrant/store; SPEC-CLAIMS.md is a generated view, a build artifact since G11 (tools/claims.py is the command; one module per responsibility since warrant #176)"},
-    {"repo": "warrant", "path": "tools/graph.py", "note": "the record graph by query (path, why, frontier, impact, delta, export) over warrant_agent/graph.py; `views --check`: the Markdown projections as build artifacts, rendered in three processes and compared (G11)"},
-    {"repo": "warrant", "path": "tools/roadmap.py", "note": "goals (unowned questions) and obligations (duties that answer them) as Warrant 2 records in .warrant/store; ROADMAP.md is a generated view, a build artifact since G11; nothing renders into SPEC.md"},
-    {"repo": "minds", "path": "assurance.json", "note": "ASSURANCE.md rendered from it, byte-compared (PR #4)"},
-    {"repo": "minds", "path": "tools/check_claims.py", "note": "claims.json quotes every spec block; the spec itself is still split by hand (open: spec as a projection of its parts)"},
-    {"repo": "sokol-core", "path": "scripts/check-claims.sh", "note": "every test, metric, flag, ADR or path a document cites must exist; an empty scope fails"},
-    {"repo": "warrant", "path": "docs/V3.md", "note": "§10 Agent interface: the contract of warrant_agent (warrant-agent/1) as claims in the same document as the engine's rules, backed by agent cases and agent mutants"},
-    {"repo": "sigma-glyph", "path": "tools/document.py", "note": "spec/sigma-resume.md as a document@1 lineage rendered into build/; tests/document_test.py holds it to the bytes of tag v1.0.0 and to the committed file, which stays until the owner decides how it ships"},
-    {"repo": "workspace", "path": "grant-applications/2026-10-29/foresight-refresh/application.json", "note": "dated grant source facts, unresolved reference, planned work and budget; foresight-draft.md rendered from this record, no submission or new test execution claimed"}
+    {
+     "repo": "warrant",
+     "path": "tools/claimslib",
+     "note": "normative SPEC.md sentences filed as Warrant 2 records in .warrant/store; SPEC-CLAIMS.md is a generated view, a build artifact since G11 (tools/claims.py is the command; one module per responsibility since warrant #176)"
+    },
+    {
+     "repo": "warrant",
+     "path": "tools/graph.py",
+     "note": "the record graph by query (path, why, frontier, impact, delta, export) over warrant_agent/graph.py; `views --check`: the Markdown projections as build artifacts, rendered in three processes and compared (G11)"
+    },
+    {
+     "repo": "warrant",
+     "path": "tools/roadmap.py",
+     "note": "goals (unowned questions) and obligations (duties that answer them) as Warrant 2 records in .warrant/store; ROADMAP.md is a generated view, a build artifact since G11; nothing renders into SPEC.md"
+    },
+    {
+     "repo": "minds",
+     "path": "assurance.json",
+     "note": "ASSURANCE.md rendered from it, byte-compared (PR #4)"
+    },
+    {
+     "repo": "minds",
+     "path": "tools/check_claims.py",
+     "note": "claims.json quotes every spec block; the spec itself is still split by hand (open: spec as a projection of its parts)"
+    },
+    {
+     "repo": "sokol-core",
+     "path": "scripts/check-claims.sh",
+     "note": "every test, metric, flag, ADR or path a document cites must exist; an empty scope fails"
+    },
+    {
+     "repo": "warrant",
+     "path": "docs/V3.md",
+     "note": "§10 Agent interface: the contract of warrant_agent (warrant-agent/1) as claims in the same document as the engine's rules, backed by agent cases and agent mutants"
+    },
+    {
+     "repo": "sigma-glyph",
+     "path": "tools/document.py",
+     "note": "spec/sigma-resume.md as a document@1 lineage rendered into build/; tests/document_test.py holds it to the bytes of tag v1.0.0 and to the committed file, which stays until the owner decides how it ships"
+    },
+    {
+     "repo": "workspace",
+     "path": "grant-applications/2026-10-29/foresight-refresh/application.json",
+     "note": "dated grant source facts, unresolved reference, planned work and budget; foresight-draft.md rendered from this record, no submission or new test execution claimed"
+    }
    ]
   },
   {
@@ -89,12 +125,12 @@
     "Classify a diagnostic mutant over its whole named test set, and require clean semantic passes: minds PR #27 at c5ca588 rejected a diagnostic declaration in one test but accepted the mutant on a later diagnostic-only test; reversing the test order also passed. Its semantic run could crash with KeyError while the normal run asserted, and that too was called diagnostic-only. Preserve crashes separately from passes, refuse inconclusive semantic runs, and decide any semantic kill before accepting a diagnostic declaration.",
     "Replacing assertRaisesRegex with assertNotRegex on the same error text does not turn diagnostic coverage into a burn of a refusal: minds G3 closure a1c7292 called m-rc-refusal and m-refs-seal killed when the net still rejected the same inputs without advancing the ref. Baseline and mutated vectors satisfy refusal plus unchanged-authority assertions at 38b7192; name the diagnostic property separately or isolate the semantic refusal. A later input can kill the same mutant for another reason: m-rc-needs-decision really admits two decisions, after its earlier no-decision vector was still refused by the net.",
     "Check the model's writer state as well as its recorded oracle facts: minds PR #23's full v2 property run stayed green with POWER 12/2/3 when an expiry-only mutation retained the old interpreter scope at three admitted tips but recorded the correct governing edge in history. I3b compared that history; I7 compared two host results. Compare the interpreter's current scope directly with the fold at every admitted tip, before wrong-scope proposals can be discarded as ordinary refusals; reachability counters alone do not burn that update.",
-     "When arms are compared on what they recover, the answer key must come from a source no arm holds: time-lab q11-records had a separate author write questions from code alone, each with an expression over the code that a validator evaluates at both commits. A key taken from records, prose or the log would have favoured its own arm. Report what that author's context still held; here it was one-line project summaries.",
-     "A control that must guess is no floor for arms that may abstain: q11-records' first H2 floor required each arm to beat a forced guess, and an arm that honestly says 'the passages do not settle it' lost to it. The floor became a share of correct answers above a stated value, fixed before registration.",
-     "Calibrate the parser and the parse gate on the pilot, not on the main run: in q11-records gemma4 often wrote text before its answer, and a limit of 20 tokens cut it off. The closest pair still passed the 95% gate by one answer's margin (143 of 150), so a gate first met on confirmatory data would have decided the verdict.",
-     "A one-sided hypothesis can be supported by the opposite of what its name suggests: q11-records' H2 'records are not ahead on unchanged referents' is supported because records are behind prose by more than the margin. The report must say so next to the verdict, and a count of 'supported' does not carry the difference.",
-     "Keep a prediction taken from elsewhere even when calibration points against it, and write that down before registering: q11-records kept warrant G13's prediction, calibration said -0.49 and the main run -0.21, same direction. Thirty questions also overstated the gap by more than two times, so a pilot gives a direction, not an effect size.",
-     "A signed step that changes tracked files must not run before a step that requires a clean tree: a warrant script filed roadmap releases and then ran claims replay, which answered REFUSED DIRTY and cost a round with the owner's key. Commit the records first, or order the clean-tree step first.",
+    "When arms are compared on what they recover, the answer key must come from a source no arm holds: time-lab q11-records had a separate author write questions from code alone, each with an expression over the code that a validator evaluates at both commits. A key taken from records, prose or the log would have favoured its own arm. Report what that author's context still held; here it was one-line project summaries.",
+    "A control that must guess is no floor for arms that may abstain: q11-records' first H2 floor required each arm to beat a forced guess, and an arm that honestly says 'the passages do not settle it' lost to it. The floor became a share of correct answers above a stated value, fixed before registration.",
+    "Calibrate the parser and the parse gate on the pilot, not on the main run: in q11-records gemma4 often wrote text before its answer, and a limit of 20 tokens cut it off. The closest pair still passed the 95% gate by one answer's margin (143 of 150), so a gate first met on confirmatory data would have decided the verdict.",
+    "A one-sided hypothesis can be supported by the opposite of what its name suggests: q11-records' H2 'records are not ahead on unchanged referents' is supported because records are behind prose by more than the margin. The report must say so next to the verdict, and a count of 'supported' does not carry the difference.",
+    "Keep a prediction taken from elsewhere even when calibration points against it, and write that down before registering: q11-records kept warrant G13's prediction, calibration said -0.49 and the main run -0.21, same direction. Thirty questions also overstated the gap by more than two times, so a pilot gives a direction, not an effect size.",
+    "A signed step that changes tracked files must not run before a step that requires a clean tree: a warrant script filed roadmap releases and then ran claims replay, which answered REFUSED DIRTY and cost a round with the owner's key. Commit the records first, or order the clean-tree step first.",
     "A sentence that names an actor needs a test with two actors. minds' test 28, `a_later_invalid_withdraws_only_its_own_verifier`, wrote both verdicts with one key, so it could not see that a verifier id is free text: in a 2-of-3 policy a third key naming another's id took the decision's Settled away, and followed each new id. The test held the sentence's wording and not its content; another test, from the first commit, asserted the opposite on purpose, and neither was read against the other until the rule was stated over all extensions (minds PR #60). When a claim says own, other, only or any, the witness has at least two of whatever it quantifies over.",
     "Hold a summary of what rules allow to an exhaustive search on small instances, both directions. minds' power table (who can change a status) was derived from the rules and first said an admission quorum takes everything after a rotation's wait; enumerating every coalition and every move of one commit through the real gate refuted that, since a cell whose evaluator policy names keys the quorum does not hold stays out of its reach. It also caught the table counting a verdict the coalition could attack as gone when the coalition was trying to settle (minds PR #60, test 106). State how deep the search goes: one commit is not all extensions.",
     "A kill named on a live-artifact test proves nothing in a job without the artifact. minds' mutants job fetches no chain, so a test over the live chain skips there and its mutants survive; each such mutant needs a kill on a fixture too (minds PR #61, test 112 beside test 110).",
@@ -114,17 +150,61 @@
     "A check under a stronger one is dead code, and its mutant can only survive. minds' cosign filtered other members' seals by their signatures, but the reader (`read_cas_tree`) already refuses a commit that holds a bad seal, so no input reached the filter. Delete such a check rather than keep it unkillable, and let the test name the stronger refusal (minds PR #95). A guard whose refusal is an exception needs its test to turn that exception into an assertion (`self.fail` in an `except`), or every mutant that trips it is a crash and counts for nothing."
    ],
    "instances": [
-    {"repo": "minds", "path": "tools/run_mutants.py", "note": "mutants.json; TwinDivergence also counts as a kill; tools/mutant_test.py decides wording-only failures inside assertRaises (PR #15)"},
-    {"repo": "warrant", "path": "tests/mutants.py", "note": "cited per claim in the claim records (tools/graph.py path SPEC-…); BASELINE_RED guard, --shard K/N and --merge (PR #172)"},
-    {"repo": "sokol-core", "path": ".cargo/mutants.toml", "note": "cargo-mutants"},
-    {"repo": "primitives", "path": "tools/p256_decode.py", "note": "--selftest: every negative bites"},
-    {"repo": "warrant", "path": "warrant/claims.py", "note": "why FILE:LINE: a statement -> the mutants that change it -> the BACKED claims citing them -> obligations -> goals; why --uncovered: the statements no cited mutant changes"},
-    {"repo": "minds", "path": "experiments/witness/test_witness.py", "note": "--mutants: 66 mutants of an independent proof-term checker and of the decode a proved one reads (PR #68); the named tests run unmutated first and a red baseline is refused, each mutant runs without a bytecode cache (PR #46)"},
-    {"repo": "time-lab", "path": "q1-weber/tests/mutants.py", "note": "five mutants of the registered analysis, each killed by a synthetic control on an assertion before the analysis bytes were registered"},
-    {"repo": "time-lab", "path": "q4-line/tests/mutants.py", "note": "14 mutants of a registered analysis that compares gains and precision per entropy across cells; q2-crystal, q3-self, q5-bound, q6-renewal, q7-duration, q8-what-counts, q9-field and q10-drift keep the same form (7, 13, 16, 20, 21, 23, 37 and 51; q8 removed one near-equivalent mutant, an unparsed answer counted as 0, which its 95% parse gate leaves too few answers to move a median)"},
-     {"repo": "time-lab", "path": "q11-records/tests/mutants.py", "note": "63 mutants of a registered design's code, all killed before registration, with an end-to-end case that runs the real runner against a stand-in model server."},
-    {"repo": "minds", "path": "proofs/Vars1/Power.lean", "note": "confinement over every extension of the chain; test_vars1.py 106 holds the computed table to a search through the gate"},
-    {"repo": "minds", "path": "tools/minds_chain.py", "note": "next: every single act of one roster key, read in memory, held to the gate act by act and both ways (next --check --every; test_vars1.py 132; proofs/Vars1/Pivot.lean)"}
+    {
+     "repo": "minds",
+     "path": "tools/run_mutants.py",
+     "note": "mutants.json; TwinDivergence also counts as a kill; tools/mutant_test.py decides wording-only failures inside assertRaises (PR #15)"
+    },
+    {
+     "repo": "warrant",
+     "path": "tests/mutants.py",
+     "note": "cited per claim in the claim records (tools/graph.py path SPEC-…); BASELINE_RED guard, --shard K/N and --merge (PR #172)"
+    },
+    {
+     "repo": "sokol-core",
+     "path": ".cargo/mutants.toml",
+     "note": "cargo-mutants"
+    },
+    {
+     "repo": "primitives",
+     "path": "tools/p256_decode.py",
+     "note": "--selftest: every negative bites"
+    },
+    {
+     "repo": "warrant",
+     "path": "warrant/claims.py",
+     "note": "why FILE:LINE: a statement -> the mutants that change it -> the BACKED claims citing them -> obligations -> goals; why --uncovered: the statements no cited mutant changes"
+    },
+    {
+     "repo": "minds",
+     "path": "experiments/witness/test_witness.py",
+     "note": "--mutants: 66 mutants of an independent proof-term checker and of the decode a proved one reads (PR #68); the named tests run unmutated first and a red baseline is refused, each mutant runs without a bytecode cache (PR #46)"
+    },
+    {
+     "repo": "time-lab",
+     "path": "q1-weber/tests/mutants.py",
+     "note": "five mutants of the registered analysis, each killed by a synthetic control on an assertion before the analysis bytes were registered"
+    },
+    {
+     "repo": "time-lab",
+     "path": "q4-line/tests/mutants.py",
+     "note": "14 mutants of a registered analysis that compares gains and precision per entropy across cells; q2-crystal, q3-self, q5-bound, q6-renewal, q7-duration, q8-what-counts, q9-field and q10-drift keep the same form (7, 13, 16, 20, 21, 23, 37 and 51; q8 removed one near-equivalent mutant, an unparsed answer counted as 0, which its 95% parse gate leaves too few answers to move a median)"
+    },
+    {
+     "repo": "time-lab",
+     "path": "q11-records/tests/mutants.py",
+     "note": "63 mutants of a registered design's code, all killed before registration, with an end-to-end case that runs the real runner against a stand-in model server."
+    },
+    {
+     "repo": "minds",
+     "path": "proofs/Vars1/Power.lean",
+     "note": "confinement over every extension of the chain; test_vars1.py 106 holds the computed table to a search through the gate"
+    },
+    {
+     "repo": "minds",
+     "path": "tools/minds_chain.py",
+     "note": "next: every single act of one roster key, read in memory, held to the gate act by act and both ways (next --check --every; test_vars1.py 132; proofs/Vars1/Pivot.lean)"
+    }
    ]
   },
   {
@@ -144,11 +224,31 @@
     "An owner-path list names files while the interpreter resolves names: warrant's gate protected warrant/shapes.py, and a pull request adding warrant/shapes/__init__.py replaced the module it imports (Codex, 2026-11-07). Derive the guarded places from the listed files (same-name packages, other suffixes, __pycache__, search-path directories, .gitattributes, case folding) and resolve the test's import closure through the import system, not by guessing paths (warrant fix/n1-pin-and-gate-closure)."
    ],
    "instances": [
-    {"repo": "minds", "path": "tools/minds_chain.py", "note": "profile_at: SHA-256 of every tracked file; a symlink or submodule refused"},
-    {"repo": "minds", "path": "assurance.json", "note": ""},
-    {"repo": "warrant", "path": "warrant/claims.py", "note": "SPEC-CLAIMS.md rendered from the records (a build artifact since G11)"},
-    {"repo": "warrant", "path": "warrant/shapes.py", "note": "hex64, hex128, the view token, the question reference and the actor id, defined once; tests/shapes_test.py S6 refuses a hex pattern written anywhere else"},
-    {"repo": "warrant", "path": "tests/agent_test.py", "note": "Q01 reads AGENT.md's roadmap recipe and compares stores byte for byte with tools/roadmap.py; Q02 runs it over stdio MCP"}
+    {
+     "repo": "minds",
+     "path": "tools/minds_chain.py",
+     "note": "profile_at: SHA-256 of every tracked file; a symlink or submodule refused"
+    },
+    {
+     "repo": "minds",
+     "path": "assurance.json",
+     "note": ""
+    },
+    {
+     "repo": "warrant",
+     "path": "warrant/claims.py",
+     "note": "SPEC-CLAIMS.md rendered from the records (a build artifact since G11)"
+    },
+    {
+     "repo": "warrant",
+     "path": "warrant/shapes.py",
+     "note": "hex64, hex128, the view token, the question reference and the actor id, defined once; tests/shapes_test.py S6 refuses a hex pattern written anywhere else"
+    },
+    {
+     "repo": "warrant",
+     "path": "tests/agent_test.py",
+     "note": "Q01 reads AGENT.md's roadmap recipe and compares stores byte for byte with tools/roadmap.py; Q02 runs it over stdio MCP"
+    }
    ]
   },
   {
@@ -179,14 +279,46 @@
     "A one-byte control proves the comparison bites, and -1 does not: a refusal code of -1 packs to the same four bytes little- and big-endian, so a statement whose encoding swapped byte order still matched; only a -2 vector killed that mutant (minds 6a, test 136). Pick sentinel values that differ under the transformation a mutant would make."
    ],
    "instances": [
-    {"repo": "primitives", "path": "catalog.json", "note": "classes, boundaries, bite proofs, registered implementations"},
-    {"repo": "primitives", "path": "run.py", "note": ""},
-    {"repo": "minds", "path": "experiments/witness/check.py", "note": "a proof-term checker for 'Settled at a tip' with its own parsers and Ed25519 and the spec's constants, no code of vars1.py; held to the lens by an exhaustive subset test (222 terms on two G6 histories) and to RFC 8032 by its vectors; a term that names a key twice is refused, not read last-wins (minds PR #48)"},
-    {"repo": "warrant", "path": "warrant/differential.py", "note": "release n (from PyPI) and the head assess one live store; reports must be the same bytes but for the engine's identity (code, assessment), any other difference declared member by member, else refused (roadmap G12, D01-D05, T61-T67). First run: warrant, minds, time-lab and interdict-mesh SAME between 3.0.0a2 and 95 later commits"},
-    {"repo": "minds", "path": "test_vars1_props.py", "note": "lean_checks: the Lean model's fold (Fold.lean, Fold2.lean under v2) and proved Passes 1-2 (Exec.lean), compiled, against the rules kernels (I9, I10) on generated chains, test 88's rules changes and every tip of the live chain (test_every_tip_of_the_live_chain, PR #52)"},
-    {"repo": "minds", "path": "proofs/Vars1/Mask.lean", "note": "F42: independent descriptor-to-mask and reference-position oracle; CI regenerates its 310-case corpus, test 89 compares the host, five host mutants bite; corpus agreement, not a parser proof (PR #21)"},
-    {"repo": "minds", "path": "verify/minds_verify.mjs", "note": "the offline bundle verifier written again in JavaScript for a browser (WebCrypto SHA-256 and Ed25519, WebAssembly for --kernel), held byte for byte to verify/minds_verify.py by verify/vectors.json: 516 vectors recorded from 27 offline tests' own calls, spoiled bytes and the live bundles (tools/verify_vectors.py); test 134, 20 mutants; equal in Chromium too; the release check page site/ runs it (minds PR #91)"},
-    {"repo": "minds", "path": "experiments/warrant-checker/src/lib.rs", "note": "experiment 6a: warrant's body-against-schema check (engine._schema_problem, _body_problem at f7e3637b) written again as a no_std wasm rules module, held byte for byte to warrant's Python by 3615 vectors (live store, mutations, edges, non-canonical bytes; code by traced return statement), 49 mutants; the same steps and bytes under Node (V8) and wasmtime (Cranelift) (minds PR #94, 2026-11-13)"}
+    {
+     "repo": "primitives",
+     "path": "catalog.json",
+     "note": "classes, boundaries, bite proofs, registered implementations"
+    },
+    {
+     "repo": "primitives",
+     "path": "run.py",
+     "note": ""
+    },
+    {
+     "repo": "minds",
+     "path": "experiments/witness/check.py",
+     "note": "a proof-term checker for 'Settled at a tip' with its own parsers and Ed25519 and the spec's constants, no code of vars1.py; held to the lens by an exhaustive subset test (222 terms on two G6 histories) and to RFC 8032 by its vectors; a term that names a key twice is refused, not read last-wins (minds PR #48)"
+    },
+    {
+     "repo": "warrant",
+     "path": "warrant/differential.py",
+     "note": "release n (from PyPI) and the head assess one live store; reports must be the same bytes but for the engine's identity (code, assessment), any other difference declared member by member, else refused (roadmap G12, D01-D05, T61-T67). First run: warrant, minds, time-lab and interdict-mesh SAME between 3.0.0a2 and 95 later commits"
+    },
+    {
+     "repo": "minds",
+     "path": "test_vars1_props.py",
+     "note": "lean_checks: the Lean model's fold (Fold.lean, Fold2.lean under v2) and proved Passes 1-2 (Exec.lean), compiled, against the rules kernels (I9, I10) on generated chains, test 88's rules changes and every tip of the live chain (test_every_tip_of_the_live_chain, PR #52)"
+    },
+    {
+     "repo": "minds",
+     "path": "proofs/Vars1/Mask.lean",
+     "note": "F42: independent descriptor-to-mask and reference-position oracle; CI regenerates its 310-case corpus, test 89 compares the host, five host mutants bite; corpus agreement, not a parser proof (PR #21)"
+    },
+    {
+     "repo": "minds",
+     "path": "verify/minds_verify.mjs",
+     "note": "the offline bundle verifier written again in JavaScript for a browser (WebCrypto SHA-256 and Ed25519, WebAssembly for --kernel), held byte for byte to verify/minds_verify.py by verify/vectors.json: 516 vectors recorded from 27 offline tests' own calls, spoiled bytes and the live bundles (tools/verify_vectors.py); test 134, 20 mutants; equal in Chromium too; the release check page site/ runs it (minds PR #91)"
+    },
+    {
+     "repo": "minds",
+     "path": "experiments/warrant-checker/src/lib.rs",
+     "note": "experiment 6a: warrant's body-against-schema check (engine._schema_problem, _body_problem at f7e3637b) written again as a no_std wasm rules module, held byte for byte to warrant's Python by 3615 vectors (live store, mutations, edges, non-canonical bytes; code by traced return statement), 49 mutants; the same steps and bytes under Node (V8) and wasmtime (Cranelift) (minds PR #94, 2026-11-13)"
+    }
    ]
   },
   {
@@ -212,14 +344,40 @@
     "An admission is the admitter's, and no status travels with what it admitted. Before stating that two scopes read an imported cell alike, try to break it through the real gate: minds found in one cheap probe that a seal is on a cell and not on an edge, so an importer's seal can latch an edge the source never did, a source with two edges can read in no way the importer can choose, and an edge into a decision of the source's keys is out of reach (minds PR #64, proofs/Vars1/Morphism.lean). The exact condition exists and an importer cannot always arrange it; what it can do is revise by its own acceptance, on evidence it checked, and read the difference with a tool that moves nothing.",
     "A unanimous policy at the writer is a liveness trap: one member who stops answering holds every admission back, and nothing on the chain says why. minds needed every member for each release and its projection; antigravity stopped after 2026-10-29, and thirteen releases and the latest projection never settled, so no offline client could accept a release. Derive the threshold, do not guess it: the least q with n < 2q is where the overlap bound 2q - n (minds `quorum_overlap`) first guarantees that two conflicting admissions name a key that sealed both. Leave unanimity to the reader, who pins the keys whose veto it wants (minds PR #71, proofs/Vars1/History.lean `majority_overlap`).",
     "A name a key gives itself is a claim, not an identity: two keys can sign verdicts under one verifier id, so a lookup by that name answers to both. Refuse it and list both, with the way to name one exactly (8 or more hex digits of the key), rather than pick one or merge their acts (minds `next --actor`, test 132).",
-    "A second seal from a program can judge form and time, not merit, so it may only tighten. minds' first cosign (PR #95, first head) let the GitHub Actions witness seal a proposed `threshold` or `join` after a window with no veto. The analysis session's review found the gap: one member proposes a join of a second key of its own, or a threshold of 1, the witness adds the second seal, and from then on that member passes the threshold alone, so 'threshold 2' meant one member, a window and no veto for everything. The witness now seals only a raise of the threshold, of the same roster, up to a majority (above it one silent member stops every rotation). A join, a lower threshold and a rules change take two members' own seals, and the price is liveness, stated. A window needs the cosigner's own memory of its first sight: a ref anyone who can push may write is no clock, so the first sights and the vetoes it saw are in a ledger signed by its key. A signature stops forgery, not rollback to an older signed version, which undoes a veto; state that residual. Before a threshold rises, rerun the checks of every release the rise hands to a new evaluator: three minds releases from before pinned dependencies cannot be reproduced, and the witness would record a false INVALID on each (tests 138 and 139)."
+    "A second seal from a program can judge form and time, not merit, so it may only tighten. minds' first cosign (PR #95, first head) let the GitHub Actions witness seal a proposed `threshold` or `join` after a window with no veto. The analysis session's review found the gap: one member proposes a join of a second key of its own, or a threshold of 1, the witness adds the second seal, and from then on that member passes the threshold alone, so 'threshold 2' meant one member, a window and no veto for everything. The witness now seals only a raise of the threshold, of the same roster, up to a majority (above it one silent member stops every rotation). A join, a lower threshold and a rules change take two members' own seals, and the price is liveness, stated. A window needs the cosigner's own memory of its first sight: a ref anyone who can push may write is no clock, so the first sights and the vetoes it saw are in a ledger signed by its key. A signature stops forgery, not rollback to an older signed version, which undoes a veto; state that residual. Before a threshold rises, rerun the checks of every release the rise hands to a new evaluator: three minds releases from before pinned dependencies cannot be reproduced, and the witness would record a false INVALID on each (tests 138 and 139).",
+    "Offline certificate verifiers must enforce internal set uniqueness, disjointness, and exact integer accounting before evaluating thresholds: content-address SHA-256 authenticates the bytes, not the claimed cardinalities or summary lists. Duplicate controllable_viability states passed min_sovereign_bps=10000 (warrant #580, Codex finding abb28b71) and a refuted non_counting_acts entry omitted from refuted_ids bypassed max_refuted=0 (warrant #581, Codex finding ebc797bd). Reconcile every derived count and summary list from the full payload and burn each check with a mutant."
    ],
    "instances": [
-    {"repo": "warrant", "path": "warrant/claims.py", "note": "admit_bindings (self-certifying .warrant/trust.json); counters.py challenge_table (counters from anyone); author.py accept; views.py ledger -> WITNESSES.md"},
-    {"repo": "warrant", "path": "tests/tools_test.py", "note": "R0-R22: each adversary case of acceptance by replay (R16-R22: a commit named by its canonical id), mutants M444-M469"},
-    {"repo": "minds", "path": "VARS-1-SPEC.md", "note": "§3 Store and gate: a commit is named by its canonical id, never a ref, an abbreviation or a revision expression"},
-    {"repo": "warrant", "path": "warrant_agent/init.py", "note": "warrant-agent-mcp init: a signer only from an existing seed whose key the repository pins and admits; no key created (I01-I10, A87-A93)"},
-    {"repo": "minds", "path": "tools/minds_chain.py", "note": "cosign, proposed_act, read_ledger: a proposed raise of the threshold (up to a majority) cosigned by the witness after a public window with no veto; joins and lower thresholds refused (tests 138, 139)"}
+    {
+     "repo": "warrant",
+     "path": "warrant/claims.py",
+     "note": "admit_bindings (self-certifying .warrant/trust.json); counters.py challenge_table (counters from anyone); author.py accept; views.py ledger -> WITNESSES.md"
+    },
+    {
+     "repo": "warrant",
+     "path": "tests/tools_test.py",
+     "note": "R0-R22: each adversary case of acceptance by replay (R16-R22: a commit named by its canonical id), mutants M444-M469"
+    },
+    {
+     "repo": "minds",
+     "path": "VARS-1-SPEC.md",
+     "note": "§3 Store and gate: a commit is named by its canonical id, never a ref, an abbreviation or a revision expression"
+    },
+    {
+     "repo": "warrant",
+     "path": "warrant_agent/init.py",
+     "note": "warrant-agent-mcp init: a signer only from an existing seed whose key the repository pins and admits; no key created (I01-I10, A87-A93)"
+    },
+    {
+     "repo": "minds",
+     "path": "tools/minds_chain.py",
+     "note": "cosign, proposed_act, read_ledger: a proposed raise of the threshold (up to a majority) cosigned by the witness after a public window with no veto; joins and lower thresholds refused (tests 138, 139)"
+    },
+    {
+     "repo": "warrant",
+     "path": "warrant/witness.py",
+     "note": "proof-carrying offline verifiers (sha256-blob@1, vars1-coalition-viability@1, vars1-spore-receipt@1, vars1-identity-lineage@1, vars1-trajectory-mass@1, warrant-record@1) gating pact@1 settlement and grant@1 escrow (PRs #580, #581)"
+    }
    ]
   },
   {
@@ -244,11 +402,31 @@
     "A memory of what was signed must hold what was said, not what was attempted: minds' witness first remembered its own new commit, which a lost push race never publishes, and so refused itself forever on a chain that forked nothing. It now remembers the tips its projections name (minds PR #61, test 114)."
    ],
    "instances": [
-    {"repo": "minds", "path": "vars1.py", "note": "the gate: refs/vars/heads/<scope> is a linear chain moved by `git update-ref` compare-and-swap; append-only checked by `git diff-tree --diff-filter=a`; birth = first commit holding an object (VARS-1 §3, §4.1)"},
-    {"repo": "warrant", "path": "warrant/engine.py", "note": "View._chains / before / ordered; Holders.at(pos, filing): a filer's own records in chain order (SPEC-4-8..4-10, SPEC-4.1-11/12)"},
-    {"repo": "warrant", "path": "warrant/store.py", "note": "Store.append / Store.extend: prev from the actor's head under a lock on records/; warrant-agent commit refuses CHAIN_MOVED"},
-    {"repo": "time-lab", "path": "tools/tl.py", "note": "beacon: the earliest push GitHub's activity API reports holding the registration, the first drand quicknet round after it, filed as an attest on the registration; run.py seeds from both"},
-    {"repo": "minds", "path": "verify/minds_verify.py", "note": "compare_histories, compare_projections: verify-equivocation and verify-extends from two bundles alone; proofs/Vars1/History.lean for the honest half and the overlap; minds_chain.py refuse_a_fork keeps a witness's memory on its host, and a fresh runner has none"}
+    {
+     "repo": "minds",
+     "path": "vars1.py",
+     "note": "the gate: refs/vars/heads/<scope> is a linear chain moved by `git update-ref` compare-and-swap; append-only checked by `git diff-tree --diff-filter=a`; birth = first commit holding an object (VARS-1 §3, §4.1)"
+    },
+    {
+     "repo": "warrant",
+     "path": "warrant/engine.py",
+     "note": "View._chains / before / ordered; Holders.at(pos, filing): a filer's own records in chain order (SPEC-4-8..4-10, SPEC-4.1-11/12)"
+    },
+    {
+     "repo": "warrant",
+     "path": "warrant/store.py",
+     "note": "Store.append / Store.extend: prev from the actor's head under a lock on records/; warrant-agent commit refuses CHAIN_MOVED"
+    },
+    {
+     "repo": "time-lab",
+     "path": "tools/tl.py",
+     "note": "beacon: the earliest push GitHub's activity API reports holding the registration, the first drand quicknet round after it, filed as an attest on the registration; run.py seeds from both"
+    },
+    {
+     "repo": "minds",
+     "path": "verify/minds_verify.py",
+     "note": "compare_histories, compare_projections: verify-equivocation and verify-extends from two bundles alone; proofs/Vars1/History.lean for the honest half and the overlap; minds_chain.py refuse_a_fork keeps a witness's memory on its host, and a fresh runner has none"
+    }
    ]
   },
   {
@@ -272,7 +450,11 @@
     "Inside a proved prover a cache is a hypothesis of the completeness theorem, not an implementation detail: table the work that does not change between rounds once, state for the candidates that the table gives what the uncached call gives, and prove the table meets that by construction; then the theorem about what the binary runs is unchanged (minds #84: `pairs` and `standsB` tabled, 15 s to 0.5 s a decision, `groundCheck_iff` over the table). Rounds over a structure that may run in a circle are lists bound with `let`, each computed once: a recursion per cell, or a round recomputed inside a filter's lambda, unfolds the circle round by round."
    ],
    "instances": [
-    {"repo": "warrant", "path": "warrant/store.py", "note": "_verdict, Verdicts: authentication verdicts by (trust digest, record id, sha256 of the bytes), MACed with the code identity under the owner's secret; Store(root, verdicts=DIR), assess(verdicts=DIR), `--verdicts DIR` (F44, #175)"}
+    {
+     "repo": "warrant",
+     "path": "warrant/store.py",
+     "note": "_verdict, Verdicts: authentication verdicts by (trust digest, record id, sha256 of the bytes), MACed with the code identity under the owner's secret; Store(root, verdicts=DIR), assess(verdicts=DIR), `--verdicts DIR` (F44, #175)"
+    }
    ]
   },
   {
@@ -291,11 +473,20 @@
     "Split what differs from what is shared before hashing it: two reports of an unchanged store differed only in their assessment id and as_of, so the report body is one shared object and the manifest carries the two fields.",
     "Do not name an object by an identity its bytes may not have: a store can hold, under a record id, bytes that are not that record, and the view must show them as they were. Name every object by its own bytes and map the outer name in the tree.",
     "Carry the source's own anomalies in the tree: the copying views dropped the store's misfiled entries, so the assessed snapshot never matched the captured one and every context of a store with a stray file was refused; a tree that lists them reproduces the store read exactly.",
-    "A content-addressed store names what each object points at, never what points at it, so \"nothing else in the store touches X\" has no address and a reader checks it by reading the store (minds proofs/Vars1/Reader.lean, reader_reads_commit). Commit to the reverse direction too: one leaf per object listing what points at it (by kind, sorted ids), the leaves sorted by id under one Merkle root. A reader of one decision then checks its closed world from the leaves of its frame and their paths, O(|frame| log N) (minds: 16 KB against a 312 KB bundle at 651 cells, the bundle linear and the message logarithmic). Say plainly what it is not: the root is its signer's claim, not a proof of completeness. What it buys is an address, one signature for every reader and decision at a tip, and a price for lying of one object, which can carry its own git path from the tip's commit so the judge needs no store; a git tree lists all its entries, so the same path proves an absence (minds PR #72, #73, experiments/witness/revindex.py). Warrant's \"Completeness: UNATTESTED\" is the same gap."
+    "A content-addressed store names what each object points at, never what points at it, so \"nothing else in the store touches X\" has no address and a reader checks it by reading the store (minds proofs/Vars1/Reader.lean, reader_reads_commit). Commit to the reverse direction too: one leaf per object listing what points at it (by kind, sorted ids), the leaves sorted by id under one Merkle root. A reader of one decision then checks its closed world from the leaves of its frame and their paths, O(|frame| log N) (minds: 16 KB against a 312 KB bundle at 651 cells, the bundle linear and the message logarithmic). Say plainly what it is not: the root is its signer's claim, not a proof of completeness. What it buys is an address, one signature for every reader and decision at a tip, and a price for lying of one object, which can carry its own git path from the tip's commit so the judge needs no store; a git tree lists all its entries, so the same path proves an absence (minds PR #72, #73, experiments/witness/revindex.py). Warrant's \"Completeness: UNATTESTED\" is the same gap.",
+    "Every producer record that cites content-addressed evidence or witness blobs in its body must also bind those 64-hex digests in its signed refs: handoff export collects blobs and referenced records by walking refs, so omitting evidence_digest or witness_digests from refs causes a locally settled pact to fail as BLOB_MISSING after export to another receiver (warrant #580, Codex finding 2d5a5c7f)."
    ],
    "instances": [
-    {"repo": "minds", "path": "VARS-1-SPEC.md", "note": "§3: cas/{atoms,cells,seals}/<2 hex>/<62 hex>, every entry's bytes hash to its path"},
-    {"repo": "minds", "path": "experiments/witness/revindex.py", "note": "a committed reverse index of the tip (RFC 9162 tree) read by the frame, and fraud proofs carrying their git path"}
+    {
+     "repo": "minds",
+     "path": "VARS-1-SPEC.md",
+     "note": "§3: cas/{atoms,cells,seals}/<2 hex>/<62 hex>, every entry's bytes hash to its path"
+    },
+    {
+     "repo": "minds",
+     "path": "experiments/witness/revindex.py",
+     "note": "a committed reverse index of the tip (RFC 9162 tree) read by the frame, and fraud proofs carrying their git path"
+    }
    ]
   },
   {
@@ -327,10 +518,26 @@
     "Resource hardening can preserve every computed status while shrinking the histories it computes on: minds PR #19's v2 matched v1 at 3736 commits but refused the same constant-tree v1 history at 3737 (E-7), so its reproduce evidence could no longer be made. Test the same honest history in both encodings at the bound minus one, the bound and plus one; qualify compatibility and migration promises by the resource domain, and distinguish a controlled refusal from a wrong status."
    ],
    "instances": [
-    {"repo": "minds", "path": "REVIEWING.md", "note": "section 0"},
-    {"repo": "sokol-core", "path": ".github/workflows/witness-gate.yml", "note": "signed witnesses as a required check"},
-    {"repo": "warrant", "path": "warrant/review.py", "note": "the pull request review loop as records: duty, head closures, findings as challenges, replayed tests, merge observations; REVIEWS.md"},
-    {"repo": "warrant", "path": "integrations/warrant-review/waker/waker.py", "note": "Waker.replay: the review replay checker before each wake, sandboxed, seed on stdin"}
+    {
+     "repo": "minds",
+     "path": "REVIEWING.md",
+     "note": "section 0"
+    },
+    {
+     "repo": "sokol-core",
+     "path": ".github/workflows/witness-gate.yml",
+     "note": "signed witnesses as a required check"
+    },
+    {
+     "repo": "warrant",
+     "path": "warrant/review.py",
+     "note": "the pull request review loop as records: duty, head closures, findings as challenges, replayed tests, merge observations; REVIEWS.md"
+    },
+    {
+     "repo": "warrant",
+     "path": "integrations/warrant-review/waker/waker.py",
+     "note": "Waker.replay: the review replay checker before each wake, sandboxed, seed on stdin"
+    }
    ]
   },
   {
@@ -346,11 +553,31 @@
     "An ignored run directory is not a place where bytes are kept: at the close of lab's PHS line, phs-soliton v1's 160 checkpoints had lived only in a session worktree's ignored runs/, which was later removed. Its manifests carry every registered metric, but no new state-level analysis of the v1 models (the later honest decoder, for one) is possible without retraining; phs-clock (60 checkpoints, 5 MB) and fringes (35 in a 1.3 MiB snapshot) committed theirs and can re-decode. Commit or archive the weights when the verdict lands, and name what was lost in the closure record (lab CLOSED.md)."
    ],
    "instances": [
-    {"repo": "manifesto", "path": "CONTROLLED-FORGETTING-0.1.md", "note": ""},
-    {"repo": "sokol-core", "path": "docs/RETIRED.md", "note": ""},
-    {"repo": "workspace", "path": "ARCHIVED-WORKSPACE.md", "note": "~/Projects tombstone"},
-    {"repo": "workspace", "path": "ARCHIVED-REPOSITORIES.md", "note": ""},
-    {"repo": "minds", "path": "experiments/g6/RETIRED.md", "note": "a withdrawn pilot's harness and run data; its report kept unedited, its generator moved to experiments/witness/histories.py (PR #49)"}
+    {
+     "repo": "manifesto",
+     "path": "CONTROLLED-FORGETTING-0.1.md",
+     "note": ""
+    },
+    {
+     "repo": "sokol-core",
+     "path": "docs/RETIRED.md",
+     "note": ""
+    },
+    {
+     "repo": "workspace",
+     "path": "ARCHIVED-WORKSPACE.md",
+     "note": "~/Projects tombstone"
+    },
+    {
+     "repo": "workspace",
+     "path": "ARCHIVED-REPOSITORIES.md",
+     "note": ""
+    },
+    {
+     "repo": "minds",
+     "path": "experiments/g6/RETIRED.md",
+     "note": "a withdrawn pilot's harness and run data; its report kept unedited, its generator moved to experiments/witness/histories.py (PR #49)"
+    }
    ]
   },
   {
@@ -372,13 +599,35 @@
     "A merge made with a workflow's GITHUB_TOKEN starts no push workflow: dispatch the base branch's CI after it, or master CI silently stops running (warrant merge-on-acceptance, G23).",
     "A gate that can merge changes to its own rules lets the acceptor widen its own authority: the gate's configuration, pins, workflows and predicate are owner paths (warrant .warrant/merge.json owner_paths, G29-G30).",
     "A verifier's checks are its own code, run on another commit: minds `verify-release` reruns today's `run_checks` on each release's commit. A check added for new work would fail every older release still awaiting a verdict on a file its commit never had, and record INVALID under the member's key. Run each check only where the commit carries what it checks (minds `witness_checks`, as `kernel_checks` before it), and exercise it on a real pending release in the fresh clone the verifier uses, with the chain as that release was recorded (minds test 100; the 12 releases awaiting antigravity carry no witness suite).",
-    "So is the interpreter they run under: a dependency upgrade in the verifier changes every older release's run. After minds moved to sigma-glyph 1.0.0, each release recorded on 0.8.0 would have been refused by its own commit's check of the Book I bytes and recorded INVALID, which no later verdict takes back. Run each commit's checks under the requirements that commit pins (minds `interpreter_for`: this interpreter where the commit pins the same bytes or none, otherwise one built once from the commit's file with `--require-hashes`), and record nothing when that interpreter cannot be built: the release was not checked, which is not a failed check. Exercise it on a real pending release (minds test 101; `be482c9`, recorded on 0.8.0, checked by the tool running 1.0.0: 13 of 13 checks passed)."
+    "So is the interpreter they run under: a dependency upgrade in the verifier changes every older release's run. After minds moved to sigma-glyph 1.0.0, each release recorded on 0.8.0 would have been refused by its own commit's check of the Book I bytes and recorded INVALID, which no later verdict takes back. Run each commit's checks under the requirements that commit pins (minds `interpreter_for`: this interpreter where the commit pins the same bytes or none, otherwise one built once from the commit's file with `--require-hashes`), and record nothing when that interpreter cannot be built: the release was not checked, which is not a failed check. Exercise it on a real pending release (minds test 101; `be482c9`, recorded on 0.8.0, checked by the tool running 1.0.0: 13 of 13 checks passed).",
+    "Never rely on Python frozenset, copy.deepcopy, or @dataclass(frozen=True) to enforce immutable or typed value domains: frozenset collapses False==0 and True==1 (minds #136, Codex finding 7769b42a), @dataclass(frozen=True) and __init__ allow in-place reinitialization (minds #136, Codex finding 8f453892), and copy.deepcopy returns functions unchanged with mutable attributes (minds #139, Codex finding c29c9396). Enforce a closed exact-type recursive domain (type(v) is ...), construct immutable containers in __new__ with __setattr__/__delattr__ raising AttributeError, and use NamedTuple for frozen records."
    ],
    "instances": [
-    {"repo": "warrant", "path": "warrant/claims.py", "note": "merge-eligible and due-for-review from one predicate; the pull request's head read as Git objects under the base's pins"},
-    {"repo": "warrant", "path": ".github/workflows/merge-on-acceptance.yml", "note": "base code only; at most one merge per run, bound to the assessed head; master CI dispatched after it"},
-    {"repo": "warrant", "path": "integrations/warrant-review/waker/waker.py", "note": "runs the base tree's due predicate and wakes the reviewer once per head"},
-    {"repo": "minds", "path": "tools/minds_chain.py", "note": "witness_checks and kernel_checks: a release check runs only where the released commit carries it; interpreter_for: under the requirements the commit pins; so verify-release of older releases is unchanged"}
+    {
+     "repo": "warrant",
+     "path": "warrant/claims.py",
+     "note": "merge-eligible and due-for-review from one predicate; the pull request's head read as Git objects under the base's pins"
+    },
+    {
+     "repo": "warrant",
+     "path": ".github/workflows/merge-on-acceptance.yml",
+     "note": "base code only; at most one merge per run, bound to the assessed head; master CI dispatched after it"
+    },
+    {
+     "repo": "warrant",
+     "path": "integrations/warrant-review/waker/waker.py",
+     "note": "runs the base tree's due predicate and wakes the reviewer once per head"
+    },
+    {
+     "repo": "minds",
+     "path": "tools/minds_chain.py",
+     "note": "witness_checks and kernel_checks: a release check runs only where the released commit carries it; interpreter_for: under the requirements the commit pins; so verify-release of older releases is unchanged"
+    },
+    {
+     "repo": "warrant",
+     "path": "warrant/dream.py",
+     "note": "bounded deterministic offline lossless recipe synthesizer with diagnostic prescriptions over pact.compose_recipes (PR #584)"
+    }
    ]
   }
  ]
